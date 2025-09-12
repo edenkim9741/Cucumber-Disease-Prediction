@@ -205,3 +205,201 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# =============================================================================
+# FLUTTER / DART SPECIFIC
+# =============================================================================
+
+# Dart & Flutter generated files
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+flutter_*.png
+
+# Flutter iOS specific
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Runner.xcworkspace/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/.symlinks/
+
+# Flutter Android specific
+android/app/debug
+android/app/profile
+android/app/release
+android/.gradle/
+android/local.properties
+android/**/gradle-wrapper.jar
+android/.gradletasknamecache
+
+# Flutter Web specific
+web/favicon.png
+web/icons/Icon-192.png
+web/icons/Icon-512.png
+web/manifest.json
+
+# Flutter Windows specific
+windows/flutter/generated_plugins.cmake
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugin_registrant.h
+
+# Flutter macOS specific
+macos/Flutter/ephemeral/
+macos/Flutter/GeneratedPluginRegistrant.swift
+
+# Flutter Linux specific
+linux/flutter/generated_plugins.cmake
+linux/flutter/generated_plugin_registrant.cc
+linux/flutter/generated_plugin_registrant.h
+
+# Flutter test coverage
+coverage/
+
+# Flutter l10n
+lib/generated/
+**/generated/
+
+# =============================================================================
+# FIREBASE SPECIFIC
+# =============================================================================
+
+# Firebase configuration files (contain sensitive data)
+google-services.json
+GoogleService-Info.plist
+firebase-debug.log
+firebase-debug.*.log
+
+# Firebase Functions
+functions/node_modules/
+functions/.env
+functions/.env.local
+functions/.env.*.local
+functions/lib/
+functions/*.log
+
+# Firebase Hosting
+.firebase/
+firebase.json.backup
+
+# Firebase Emulator
+firebase-export-*/
+firestore-export-*/
+storage-export-*/
+
+# Firebase App Distribution
+app-distribution-debug.apk
+app-distribution-release.apk
+
+# =============================================================================
+# PYTORCH / MACHINE LEARNING SPECIFIC
+# =============================================================================
+
+# PyTorch model files
+*.pth
+*.pt
+*.ckpt
+*.pkl
+*.model
+
+# TensorBoard logs
+runs/
+logs/
+tensorboard/
+
+# Datasets
+data/
+dataset/
+datasets/
+*.h5
+*.hdf5
+
+# Jupyter Notebook specific outputs
+*.ipynb_checkpoints/
+.ipynb_checkpoints
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Weights & Biases
+wandb/
+
+# Model artifacts
+models/
+checkpoints/
+*.safetensors
+
+# =============================================================================
+# IDE AND OS SPECIFIC
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+.gradle/
+local.properties
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+DerivedData/
+
+# =============================================================================
+# TEMPORARY AND CACHE FILES
+# =============================================================================
+
+# General temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+*.out
+*.err
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
