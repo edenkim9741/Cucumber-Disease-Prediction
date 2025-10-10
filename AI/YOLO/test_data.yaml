@@ -1,0 +1,13 @@
+path: D:/jiseong/cucumber/test_dataset  # Test 데이터셋의 루트 폴더 경로
+train: images/train # 이 줄은 필요 없지만 형식상 둡니다.
+val: images/val   # 이 줄도 필요 없지만 형식상 둡니다.
+test: images/test   # Test 이미지 폴더 경로를 여기에 지정!
+
+# 3. 클래스 수
+nc: 3
+
+# 4. 클래스 명(잎, 노균병, 흰가루병)
+names:
+    0: Leaf
+    1: Downy
+    2: Powdery
