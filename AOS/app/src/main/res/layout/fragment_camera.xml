@@ -2,12 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <!-- 카메라 미리보기 (전체 화면) -->
+    <!-- 카메라 미리보기 -->
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"
         android:layout_width="0dp"
@@ -37,20 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 로그아웃 버튼 (새로 추가) -->
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@android:color/transparent"
-        android:text="로그아웃"
-        android:textColor="@color/text_white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
-
     <!-- 타이틀 -->
     <TextView
         android:id="@+id/titleText"
@@ -78,12 +62,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
+    <!-- 스와이프 힌트 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="← 내 정보 보기"
+        android:textColor="@color/text_description"
+        android:textSize="12sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
+
     <!-- 점선 프레임 -->
     <View
         android:id="@+id/cameraFrame"
         android:layout_width="280dp"
         android:layout_height="370dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/dashed_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,9 +88,9 @@
     <!-- 촬영 버튼 -->
     <Button
         android:id="@+id/captureButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="90dp"
         android:background="@drawable/capture_button"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,23 +106,9 @@
         android:fontFamily="sans-serif-medium"
         android:text="@string/app_logo"
         android:textColor="@color/primary_green"
-        android:textSize="50sp"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- 내 정보 버튼 추가 (로그아웃 버튼 옆) -->
-    <Button
-        android:id="@+id/myInfoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="@android:color/transparent"
-        android:text="내 정보"
-        android:textColor="@color/text_white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/logoutButton"
-        app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,4 +12,7 @@
     <color name="frame_green">#CDDC39</color>
     <color name="text_white">#FFFFFFFF</color>
     <color name="text_description">#E0FFFFFF</color>
+
+    <color name="disease_yellow">#F9C74F</color>
+    <color name="disease_blue">#4A90E2</color>
 </resources>
