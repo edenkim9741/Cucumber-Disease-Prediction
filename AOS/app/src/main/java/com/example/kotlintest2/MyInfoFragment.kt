@@ -3,6 +3,7 @@ package com.example.kotlintest2
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 
 class MyInfoFragment : Fragment() {
 
@@ -74,24 +76,9 @@ class MyInfoFragment : Fragment() {
             .setTitle("로그아웃")
             .setMessage("로그아웃 하시겠습니까?")
             .setPositiveButton("확인") { _, _ ->
-                logout()
+                FirebaseAuth.getInstance().signOut()
             }
             .setNegativeButton("취소", null)
             .show()
-    }
-
-    private fun logout() {
-        val prefs = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        prefs.edit().apply {
-            putBoolean(KEY_IS_LOGGED_IN, false)
-            apply()
-        }
-
-        Toast.makeText(context, "로그아웃되었습니다", Toast.LENGTH_SHORT).show()
-
-        val intent = Intent(requireActivity(), LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        requireActivity().finish()
     }
 }

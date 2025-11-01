@@ -3,11 +3,14 @@ package com.example.kotlintest2
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+
 
 class MyInfoActivity : AppCompatActivity() {
 
@@ -82,15 +85,15 @@ class MyInfoActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        prefs.edit().apply {
-            putBoolean(KEY_IS_LOGGED_IN, false)
-            apply()
-        }
+        // Firebase에서 로그아웃합니다
+        FirebaseAuth.getInstance().signOut()
 
-        Toast.makeText(this, "로그아웃되었습니다", Toast.LENGTH_SHORT).show()
+        Log.d("MainActivity", "로그아웃 되었습니다.")
 
+        // 로그아웃 후 LoginActivity로 이동합니다.
         val intent = Intent(this, LoginActivity::class.java)
+        // 기존의 모든 액티비티를 스택에서 제거하고 새로운 액티비티를 시작합니다.
+        // 이렇게 하면 사용자가 뒤로가기 버튼으로 이전 화면으로 돌아갈 수 없습니다.
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()

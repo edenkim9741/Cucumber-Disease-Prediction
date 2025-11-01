@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <!-- 권한들 -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -21,22 +24,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotlintest2"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ResultActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <!-- 📷 내 기록 Activity -->
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false" /> <!-- 📋 내 정보 상세 Activity -->
+        <activity
+            android:name=".MyInfoDetailActivity"
+            android:exported="false" /> <!-- 🧾 회원가입 Activity -->
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" /> <!-- 🖼 메인 Activity (카메라 + 내정보 ViewPager) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" /> <!-- 🔑 로그인 Activity (앱 실행 시 최초 진입 화면) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" >
-        </activity>
-
     </application>
 
 </manifest>

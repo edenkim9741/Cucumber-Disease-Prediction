@@ -1,21 +1,61 @@
 package com.example.kotlintest2
 
 import android.os.Bundle
+import android.content.Intent
+import android.util.Log
 import android.view.KeyEvent
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+//import com.google.firebase.ktx.Firebase
+//import com.google.firebase.auth.ktx.auth
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
     private var cameraFragment: CameraFragment? = null
 
+    private lateinit var auth: FirebaseAuth
+    private lateinit var authStateListener: FirebaseAuth.AuthStateListener
+
+    public override fun onStart() {
+        super.onStart()
+        auth.addAuthStateListener(authStateListener)
+    }
+
+    public override fun onStop() {
+        super.onStop()
+        auth.removeAuthStateListener(authStateListener)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        auth = Firebase.auth
+
+        authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "로그 아웃!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+
+
         setContentView(R.layout.activity_main_viewpager)
+
+
+
 
         viewPager = findViewById(R.id.viewPager)
 
@@ -25,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         // 시작 페이지를 카메라(0번 인덱스)로 설정
         viewPager.setCurrentItem(0, false)
     }
+
 
     // 음량 버튼으로 사진 촬영
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

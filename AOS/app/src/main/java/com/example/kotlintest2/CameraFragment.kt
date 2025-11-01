@@ -170,9 +170,9 @@ class CameraFragment : Fragment() {
                     Log.d(TAG, "사진이 저장되었습니다: ${output.savedUri}")
 
                     // 결과 페이지로 이동
-                    output.savedUri?.let { uri ->
-                        navigateToResultPage(uri)
-                    }
+//                    output.savedUri?.let { uri ->
+//                        navigateToResultPage(uri)
+//                    }
                 }
             }
         )

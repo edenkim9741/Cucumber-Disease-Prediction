@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -25,11 +26,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Firebase Auth 인스턴스 초기화
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
 
         // ✅ 1. 로그인 상태 확인: SharedPreferences 대신 Firebase의 현재 사용자를 확인합니다.
         if (auth.currentUser != null) {
             navigateToMainActivity()
+            Log.d("LoginActivity", "User is already logged in")
             return
         }
 
