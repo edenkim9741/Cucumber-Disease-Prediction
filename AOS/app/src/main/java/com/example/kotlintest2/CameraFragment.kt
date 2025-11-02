@@ -32,6 +32,9 @@ class CameraFragment : Fragment() {
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
 
+    private lateinit var predictor: DiseasePredictor
+
+
     companion object {
         private const val TAG = "CameraFragment"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
@@ -58,14 +61,12 @@ class CameraFragment : Fragment() {
             }
         }
 
-    private fun navigateToResultPage(imageUri: Uri) {
+    private fun navigateToResultPage(imageUri: Uri, prediction: PredictionResult) {
         val intent = Intent(requireActivity(), ResultActivity::class.java)
         intent.putExtra("imageUri", imageUri.toString())
 
-        // TODO: 추후 AI 모델 결과로 대체
-        // 임시 더미 데이터
-        intent.putExtra("diseaseName", "노균병")
-        intent.putExtra("confidence", 92)
+        intent.putExtra("diseaseName", prediction.className)
+        intent.putExtra("confidence", (prediction.confidence*100).toInt())
 
         startActivity(intent)
     }
@@ -85,6 +86,13 @@ class CameraFragment : Fragment() {
         captureButton = view.findViewById(R.id.captureButton)
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        predictor = DiseasePredictor(requireContext())
+
+        cameraExecutor.execute {
+            predictor.initModel()
+        }
+
 
         if (allPermissionsGranted()) {
             startCamera()
@@ -169,7 +177,49 @@ class CameraFragment : Fragment() {
                     Toast.makeText(context, "사진 촬영 완료!", Toast.LENGTH_SHORT).show()
                     Log.d(TAG, "사진이 저장되었습니다: ${output.savedUri}")
 
-                    // 결과 페이지로 이동
+                    output.savedUri?.let { uri ->
+
+                        // 추론은 무거운 작업이므로 백그라운드 스레드(cameraExecutor)에서 실행
+                        cameraExecutor.execute {
+                            try {
+                                // 1. 저장된 URI를 Bitmap으로 변환
+                                val bitmap = MediaStore.Images.Media.getBitmap(
+                                    requireActivity().contentResolver,
+                                    uri
+                                )
+
+                                // 2. Predictor로 추론 실행
+                                val prediction = predictor.predict(bitmap)
+
+                                // 3. 결과 로깅 (요청 사항)
+                                if (prediction != null) {
+                                    Log.i(TAG, "--- 추론 결과 ---")
+                                    Log.i(TAG, "URI: $uri")
+                                    Log.i(TAG, "클래스: ${prediction.className}")
+                                    Log.i(TAG, "신뢰도: ${prediction.confidence * 100}%")
+                                    Log.i(TAG, "--------------------")
+
+                                    // 4. 결과 페이지로 이동 (UI 작업이므로 Main 스레드에서 실행)
+                                    activity?.runOnUiThread {
+                                        navigateToResultPage(uri, prediction)
+                                    }
+                                } else {
+                                    Log.e(TAG, "추론 결과가 null입니다.")
+                                    activity?.runOnUiThread {
+                                        Toast.makeText(context, "분석 실패", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                            } catch (e: Exception) {
+                                Log.e(TAG, "추론 또는 비트맵 변환 실패", e)
+                                activity?.runOnUiThread {
+                                    Toast.makeText(context, "분석 중 오류 발생", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+
+//                    // 결과 페이지로 이동
 //                    output.savedUri?.let { uri ->
 //                        navigateToResultPage(uri)
 //                    }
@@ -180,6 +230,6 @@ class CameraFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraExecutor.shutdown()
+//        cameraExecutor.shutdown()
     }
 }
