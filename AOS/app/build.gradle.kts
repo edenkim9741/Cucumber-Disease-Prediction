@@ -73,9 +73,10 @@ dependencies {
     // Google Play 서비스
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 
-//    implementation("org.pytorch:executorch-android:1.0.0") {
-//        exclude group:'com.facebook.fbjni', module:'fbjni'
-//    }
+    implementation("org.pytorch:executorch-android:1.0.0"){
+        exclude(group = "com.facebook.fbjni")
+    }
+
     implementation("org.pytorch:pytorch_android_lite:2.1.0")
     implementation("org.pytorch:pytorch_android_torchvision_lite:2.1.0")
 }

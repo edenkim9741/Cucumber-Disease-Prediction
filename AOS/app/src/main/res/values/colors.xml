@@ -5,13 +5,15 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- 앱 테마 색상 -->
-    <color name="primary_green">#8BC34A</color>
+    <color name="primary_green">#C1DD8F</color>
+    <color name="dark_green">#5F9340</color>
     <color name="light_green">#C8E6C9</color>
     <color name="dark_overlay">#80000000</color>
     <color name="capture_button_green">#9CCC65</color>
     <color name="frame_green">#CDDC39</color>
     <color name="text_white">#FFFFFFFF</color>
     <color name="text_description">#E0FFFFFF</color>
+    <color name="gray">#C0B5BF</color>
 
     <color name="disease_yellow">#F9C74F</color>
     <color name="disease_blue">#4A90E2</color>

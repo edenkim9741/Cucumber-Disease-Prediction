@@ -15,16 +15,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 반투명 오버레이 -->
-    <View
-        android:id="@+id/overlay"
+    <!-- 커스텀 오버레이 (안쪽 둥글게) -->
+    <com.example.kotlintest2.CameraOverlayView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/dark_overlay"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 상태바 영역 -->
     <View
@@ -40,11 +38,10 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="59dp"
         android:text="@string/cucumber_leaf_title"
         android:textColor="@color/text_white"
-        android:textSize="28sp"
+        android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
@@ -57,7 +54,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/cucumber_leaf_description"
         android:textColor="@color/text_description"
-        android:textSize="14sp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
@@ -79,19 +76,22 @@
         android:id="@+id/cameraFrame"
         android:layout_width="280dp"
         android:layout_height="370dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="42dp"
         android:background="@drawable/dashed_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionText" />
 
     <!-- 촬영 버튼 -->
-    <Button
+    <ImageButton
         android:id="@+id/captureButton"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="90dp"
-        android:background="@drawable/capture_button"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_cucumber"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:contentDescription="촬영"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,10 +103,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:fontFamily="sans-serif-medium"
         android:text="@string/app_logo"
         android:textColor="@color/primary_green"
-        android:textSize="40sp"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

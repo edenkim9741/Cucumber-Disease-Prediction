@@ -20,7 +20,7 @@
         android:id="@+id/profileSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:orientation="horizontal"
@@ -36,14 +36,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="김오이"
-            android:textColor="@color/primary_green"
-            android:textSize="32sp"
-            android:textStyle="bold" />
+            android:textColor="@color/dark_green"
+            android:textSize="48sp" />
 
         <!-- 프로필 아이콘 -->
         <View
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@drawable/profile_circle_background" />
 
     </LinearLayout>
@@ -53,7 +52,7 @@
         android:id="@+id/divider1"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:background="#E0E0E0"
@@ -66,10 +65,10 @@
         android:id="@+id/myInfoButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:paddingVertical="16dp"
+        android:paddingVertical="20dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="?android:attr/selectableItemBackground"
@@ -85,7 +84,7 @@
             android:layout_weight="1"
             android:text="내 정보 확인"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -108,15 +107,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myInfoButton" />
 
-    <!-- 로그아웃 버튼 -->
+    <!-- 내 기록 확인 버튼 -->
     <LinearLayout
         android:id="@+id/viewHistoryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:paddingVertical="16dp"
+        android:paddingVertical="20dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="?android:attr/selectableItemBackground"
@@ -132,7 +131,7 @@
             android:layout_weight="1"
             android:text="내 기록 확인"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -160,10 +159,10 @@
         android:id="@+id/logoutButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:paddingVertical="16dp"
+        android:paddingVertical="20dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="?android:attr/selectableItemBackground"
@@ -179,7 +178,7 @@
             android:layout_weight="1"
             android:text="로그아웃"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -201,7 +200,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logoutButton" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

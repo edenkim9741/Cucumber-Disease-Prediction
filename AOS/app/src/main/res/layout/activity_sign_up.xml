@@ -14,10 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:fontFamily="sans-serif-medium"
         android:text="회원가입"
-        android:textColor="@color/primary_green"
-        android:textSize="32sp"
+        android:textColor="@color/dark_green"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="QcumbeR 계정을 만들어보세요"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="14sp"
+        android:textColor="@color/gray"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appTitle" />
@@ -122,7 +121,7 @@
         android:backgroundTint="@color/primary_green"
         android:text="회원가입"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirmPasswordInputLayout" />
@@ -134,8 +133,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="이미 계정이 있으신가요? 로그인"
-        android:textColor="@color/primary_green"
-        android:textSize="14sp"
+        android:textColor="@color/gray"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signUpButton" />

@@ -12,7 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
@@ -28,7 +28,7 @@ import java.util.concurrent.Executors
 class CameraFragment : Fragment() {
 
     private lateinit var previewView: PreviewView
-    private lateinit var captureButton: Button
+    private lateinit var captureButton: ImageButton
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
 
@@ -218,11 +218,6 @@ class CameraFragment : Fragment() {
                             }
                         }
                     }
-
-//                    // 결과 페이지로 이동
-//                    output.savedUri?.let { uri ->
-//                        navigateToResultPage(uri)
-//                    }
                 }
             }
         )

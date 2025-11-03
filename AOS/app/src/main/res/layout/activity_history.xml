@@ -43,9 +43,8 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:text="나의 오이로그"
-            android:textColor="@color/primary_green"
-            android:textSize="40dp"
-            android:textStyle="bold" />
+            android:textColor="@color/dark_green"
+            android:textSize="40dp" />
 
     </LinearLayout>
 

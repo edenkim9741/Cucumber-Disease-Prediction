@@ -5,6 +5,12 @@
         <item name="colorPrimaryContainer">@color/light_green</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
+        // 폰트
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+        // 입력창 테두리 색상
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="colorOnSurfaceVariant">@color/gray</item>
     </style>
 
     <style name="Theme.Kotlintest2" parent="Base.Theme.Kotlintest2" />

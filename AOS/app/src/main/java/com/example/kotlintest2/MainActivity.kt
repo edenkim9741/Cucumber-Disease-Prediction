@@ -13,9 +13,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-//import com.google.firebase.ktx.Firebase
-//import com.google.firebase.auth.ktx.auth
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
@@ -53,9 +50,6 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(R.layout.activity_main_viewpager)
-
-
-
 
         viewPager = findViewById(R.id.viewPager)
 
