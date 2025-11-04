@@ -4,9 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import androidx.core.content.res.ResourcesCompat
+import android.text.Html
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
@@ -19,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
+    private lateinit var signupText: TextView
     // 회원가입 버튼을 위한 변수도 추가하는 것이 좋습니다. (UI에 버튼 추가 필요)
     // private lateinit var signUpButton: Button
 
@@ -41,6 +48,33 @@ class LoginActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         loginButton = findViewById(R.id.loginButton)
+        signupText = findViewById(R.id.signupText)
+
+        // 로고 투톤 색상 적용
+        val logoTextView = findViewById<TextView>(R.id.appTitle)
+        val logoText = "QcumbeR"
+        val spannableString = SpannableString(logoText)
+
+        logoTextView.typeface = ResourcesCompat.getFont(this, R.font.quantico_bold)
+
+        spannableString.setSpan(
+            ForegroundColorSpan(getColor(R.color.dark_green)),
+            0, 1,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString.setSpan(
+            ForegroundColorSpan(getColor(R.color.dark_green)),
+            6, 7,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        logoTextView.text = spannableString
+
+        // 회원가입 밑줄 추가
+        signupText.text = Html.fromHtml(
+            "계정이 없으신가요? <u>회원가입</u>",
+            Html.FROM_HTML_MODE_LEGACY
+        )
 
         // 로그인 버튼 클릭 리스너
         loginButton.setOnClickListener {
@@ -69,7 +103,6 @@ class LoginActivity : AppCompatActivity() {
         }
         */
     }
-
     private fun performLogin(email: String, password: String) {
         // Firebase Auth를 사용하여 이메일과 비밀번호로 로그인
         auth.signInWithEmailAndPassword(email, password)
