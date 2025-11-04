@@ -2,12 +2,18 @@ package com.example.kotlintest2
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -50,6 +56,8 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.loginButton)
         signupText = findViewById(R.id.signupText)
 
+        // 회원가입 텍스트 설정
+        setupSignupText()
         // 로고 투톤 색상 적용
         val logoTextView = findViewById<TextView>(R.id.appTitle)
         val logoText = "QcumbeR"
@@ -88,20 +96,41 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "이메일과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
-        // TODO: UI에 회원가입 버튼을 추가하고 아래 리스너를 연결하세요.
-        /*
-        signUpButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
+    private fun setupSignupText() {
+        val fullText = "계정이 없으신가요? 회원가입"
+        val spannableString = SpannableString(fullText)
 
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                performSignUp(email, password)
-            } else {
-                Toast.makeText(this, "이메일과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+        // "회원가입" 부분에 클릭 이벤트 적용
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                // SignUpActivity로 이동
+                val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+                startActivity(intent)
+            }
+
+            override fun updateDrawState(ds: android.text.TextPaint) {
+                super.updateDrawState(ds)
+                // 회원가입 텍스트 스타일 설정
+                ds.color = ContextCompat.getColor(this@LoginActivity, R.color.primary_green)
+                ds.isUnderlineText = false // 밑줄 제거
             }
         }
-        */
+
+        // "회원가입" 텍스트의 시작과 끝 인덱스
+        val startIndex = fullText.indexOf("회원가입")
+        val endIndex = startIndex + "회원가입".length
+
+        spannableString.setSpan(
+            clickableSpan,
+            startIndex,
+            endIndex,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        signupText.text = spannableString
+        signupText.movementMethod = LinkMovementMethod.getInstance()
     }
     private fun performLogin(email: String, password: String) {
         // Firebase Auth를 사용하여 이메일과 비밀번호로 로그인
