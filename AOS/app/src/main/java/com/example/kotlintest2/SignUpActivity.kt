@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.text.Html
+import com.google.firebase.auth.FirebaseAuth
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -23,6 +24,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var signUpButton: Button
     private lateinit var loginText: TextView
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +74,7 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(this, "비밀번호는 6자 이상이어야 합니다", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    performSignUp(name, email, password)
+                    performSignUp(email, password)
                 }
             }
         }
@@ -112,12 +114,24 @@ class SignUpActivity : AppCompatActivity() {
         loginText.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    private fun performSignUp(name: String, email: String, password: String) {
-        // 임시로 회원가입 성공 처리
-        // 추후 Firebase Authentication으로 교체 예정
-        Toast.makeText(this, "회원가입 성공!", Toast.LENGTH_SHORT).show()
+    private fun performSignUp(email: String, password: String) {
+        auth = FirebaseAuth.getInstance()
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // 회원가입 성공
+                    Toast.makeText(this, "회원가입 성공! 자동으로 로그인됩니다.", Toast.LENGTH_SHORT).show()
+                    navigateToMainActivity()
+                } else {
+                    // 회원가입 실패
+                    Toast.makeText(this, "회원가입 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
 
-        // 로그인 화면으로 이동
-        finish()
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish() // 로그인 액티비티는 종료하여 뒤로 가기 시 다시 보이지 않도록 함
     }
 }

@@ -15,7 +15,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.text.Spannable
-import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.res.ResourcesCompat
 import android.text.Html
@@ -77,12 +76,6 @@ class LoginActivity : AppCompatActivity() {
         )
 
         logoTextView.text = spannableString
-
-        // 회원가입 밑줄 추가
-        signupText.text = Html.fromHtml(
-            "계정이 없으신가요? <u>회원가입</u>",
-            Html.FROM_HTML_MODE_LEGACY
-        )
 
         // 로그인 버튼 클릭 리스너
         loginButton.setOnClickListener {
@@ -147,20 +140,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    // 이 함수는 사용자가 없는 경우를 대비해 회원가입 기능으로 추가하는 것을 권장합니다.
-    private fun performSignUp(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // 회원가입 성공
-                    Toast.makeText(this, "회원가입 성공! 자동으로 로그인됩니다.", Toast.LENGTH_SHORT).show()
-                    navigateToMainActivity()
-                } else {
-                    // 회원가입 실패
-                    Toast.makeText(this, "회원가입 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
+
 
     private fun navigateToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
