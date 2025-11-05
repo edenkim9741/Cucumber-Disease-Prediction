@@ -14,37 +14,117 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 상단 헤더 -->
+    <!-- 뒤로가기 버튼 -->
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:text="←"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
+
+    <!-- 타이틀 -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="나의 오이로그"
+        android:textColor="@color/primary_green"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
+
+    <!-- 필터 칩들 -->
+    <com.google.android.material.chip.Chip
+        android:id="@+id/filterNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:checkable="true"
+        android:checked="true"
+        android:text="정상"
+        android:textColor="@android:color/black"
+        app:checkedIcon="@android:drawable/checkbox_on_background"
+        app:chipBackgroundColor="@color/chip_background_color"
+        app:chipStrokeColor="@android:color/black"
+        app:chipStrokeWidth="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleText" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/filterDowny"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:checkable="true"
+        android:checked="true"
+        android:text="노균병"
+        android:textColor="@android:color/black"
+        app:checkedIcon="@android:drawable/checkbox_on_background"
+        app:chipBackgroundColor="@color/chip_background_color"
+        app:chipStrokeColor="@android:color/black"
+        app:chipStrokeWidth="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/filterNormal"
+        app:layout_constraintStart_toEndOf="@id/filterNormal"
+        app:layout_constraintTop_toTopOf="@id/filterNormal" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/filterPowdery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:checkable="true"
+        android:checked="true"
+        android:text="흰가루병"
+        android:textColor="@android:color/black"
+        app:checkedIcon="@android:drawable/checkbox_on_background"
+        app:chipBackgroundColor="@color/chip_background_color"
+        app:chipStrokeColor="@android:color/black"
+        app:chipStrokeWidth="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/filterNormal"
+        app:layout_constraintStart_toEndOf="@id/filterDowny"
+        app:layout_constraintTop_toTopOf="@id/filterNormal" />
+
+    <!-- 정렬 버튼 -->
     <LinearLayout
-        android:id="@+id/headerLayout"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:id="@+id/sortButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/filterNormal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusBarSpace">
+        app:layout_constraintTop_toTopOf="@id/filterNormal">
 
-        <!-- 뒤로가기 버튼 -->
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:text="←"
-            android:textColor="@android:color/black"
-            android:textSize="24sp" />
-
-        <!-- 타이틀 -->
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/sortText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:text="나의 오이로그"
-            android:textColor="@color/dark_green"
-            android:textSize="40dp" />
+            android:text="최신순"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="↕"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -53,11 +133,14 @@
         android:id="@+id/historyRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="8dp"
+        android:layout_marginTop="16dp"
         android:clipToPadding="false"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+        app:layout_constraintTop_toBottomOf="@id/filterNormal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

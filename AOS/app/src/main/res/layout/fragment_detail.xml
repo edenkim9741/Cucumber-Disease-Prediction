@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sample_normal_1" />
+                    android:src="@drawable/sample_normal1" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sample_normal_2" />
+                    android:src="@drawable/sample_normal2" />
 
                 <TextView
                     android:layout_width="match_parent"
