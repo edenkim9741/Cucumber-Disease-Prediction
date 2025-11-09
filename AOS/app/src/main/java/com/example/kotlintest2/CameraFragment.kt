@@ -25,6 +25,11 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.jvm.java
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 
 class CameraFragment : Fragment() {
 
@@ -34,7 +39,6 @@ class CameraFragment : Fragment() {
     private var imageCapture: ImageCapture? = null
 
     private lateinit var predictor: DiseasePredictor
-
 
     companion object {
         private const val TAG = "CameraFragment"
@@ -85,11 +89,36 @@ class CameraFragment : Fragment() {
 
         previewView = view.findViewById(R.id.previewView)
         captureButton = view.findViewById(R.id.captureButton)
+
+        val logoText = view.findViewById<TextView>(R.id.appLogo)
+
+        // Quantico 폰트 적용
+        logoText.typeface = ResourcesCompat.getFont(requireContext(), R.font.quantico_bold)
+
+        // 투톤 색상 적용
+        val logoString = "QcumbeR"
+        val spannableString = SpannableString(logoString)
+
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.dark_green)),
+            0, 1,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.dark_green)),
+            6, 7,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        logoText.text = spannableString
+
         cameraExecutor = Executors.newSingleThreadExecutor()
         predictor = DiseasePredictor(requireContext())
         cameraExecutor.execute { predictor.initModel() }
 
-        captureButton.setOnClickListener { takePhoto() }
+        cameraExecutor.execute {
+            predictor.initModel()
+        }
 
         if (allPermissionsGranted()) {
             startCamera()
