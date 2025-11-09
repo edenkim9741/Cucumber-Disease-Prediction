@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.jvm.java
 
 class CameraFragment : Fragment() {
 
@@ -84,23 +85,32 @@ class CameraFragment : Fragment() {
 
         previewView = view.findViewById(R.id.previewView)
         captureButton = view.findViewById(R.id.captureButton)
-
         cameraExecutor = Executors.newSingleThreadExecutor()
-
         predictor = DiseasePredictor(requireContext())
+        cameraExecutor.execute { predictor.initModel() }
 
-        cameraExecutor.execute {
-            predictor.initModel()
-        }
-
+        captureButton.setOnClickListener { takePhoto() }
 
         if (allPermissionsGranted()) {
             startCamera()
         } else {
             requestPermissions()
         }
+    }
 
-        captureButton.setOnClickListener { takePhoto() }
+    override fun onResume() {
+        super.onResume()
+        if (allPermissionsGranted()) {
+            startCamera()   // 🔥 복귀 시 카메라 재시작
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            val cameraProvider = ProcessCameraProvider.getInstance(requireContext()).get()
+            cameraProvider.unbindAll()  // 🔥 떠날 때 카메라 해제
+        } catch (_: Exception) {}
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -225,6 +235,6 @@ class CameraFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        cameraExecutor.shutdown()
+        cameraExecutor.shutdown()
     }
 }
