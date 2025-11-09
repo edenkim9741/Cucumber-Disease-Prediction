@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.jvm.java
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -112,8 +113,8 @@ class CameraFragment : Fragment() {
         logoText.text = spannableString
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-
         predictor = DiseasePredictor(requireContext())
+        cameraExecutor.execute { predictor.initModel() }
 
         cameraExecutor.execute {
             predictor.initModel()
@@ -124,8 +125,21 @@ class CameraFragment : Fragment() {
         } else {
             requestPermissions()
         }
+    }
 
-        captureButton.setOnClickListener { takePhoto() }
+    override fun onResume() {
+        super.onResume()
+        if (allPermissionsGranted()) {
+            startCamera()   // 🔥 복귀 시 카메라 재시작
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            val cameraProvider = ProcessCameraProvider.getInstance(requireContext()).get()
+            cameraProvider.unbindAll()  // 🔥 떠날 때 카메라 해제
+        } catch (_: Exception) {}
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
