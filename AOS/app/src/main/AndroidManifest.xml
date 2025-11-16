@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- 권한들 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -24,32 +25,47 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotlintest2"
         tools:targetApi="31">
+
+        <!-- 📷 결과 Activity -->
         <activity
             android:name=".ResultActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
         <!-- 📷 내 기록 Activity -->
         <activity
             android:name=".HistoryActivity"
-            android:exported="false" /> <!-- 📋 내 정보 상세 Activity -->
+            android:exported="false" />
+
+        <!-- 📋 내 정보 Activity (추가됨) -->
+        <activity
+            android:name=".MyInfoActivity"
+            android:exported="false" />
+
+        <!-- 📋 내 정보 상세 Activity -->
         <activity
             android:name=".MyInfoDetailActivity"
-            android:exported="false" /> <!-- 🧾 회원가입 Activity -->
+            android:exported="false" />
+
+        <!-- 🧾 회원가입 Activity -->
         <activity
             android:name=".SignUpActivity"
             android:exported="false"
-            android:screenOrientation="portrait" /> <!-- 🖼 메인 Activity (카메라 + 내정보 ViewPager) -->
+            android:screenOrientation="portrait" />
+
+        <!-- 🖼 메인 Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait" /> <!-- 🔑 로그인 Activity (앱 실행 시 최초 진입 화면) -->
+            android:screenOrientation="portrait" />
+
+        <!-- 🔑 로그인 Activity -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
