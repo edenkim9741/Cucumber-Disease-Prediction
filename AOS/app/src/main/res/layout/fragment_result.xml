@@ -7,42 +7,52 @@
     android:padding="24dp"
     android:background="@color/white">
 
-    <!-- 로고 -->
+    <!-- 로고 (중앙 상단) -->
     <TextView
         android:id="@+id/logoTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:text="QcumbeR"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textSize="94.37px"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 촬영 이미지 -->
-    <ImageView
-        android:id="@+id/resultImageView"
-        android:layout_width="280dp"
-        android:layout_height="340dp"
-        android:layout_marginTop="24dp"
-        android:scaleType="centerCrop"
+    <!-- 촬영 이미지 (둥근 모서리) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/imageCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:layout_constraintDimensionRatio="973:1281"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logoTop" />
+        app:layout_constraintTop_toBottomOf="@id/logoTop">
 
-    <!-- 진단 결과 -->
+        <ImageView
+            android:id="@+id/resultImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:contentDescription="진단 이미지" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- 진단 결과 텍스트 -->
     <TextView
         android:id="@+id/diseaseNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="노균병"
-        android:textSize="32sp"
-        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:text="흰가루병"
+        android:textSize="78.79px"
         android:textColor="@color/disease_yellow"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/resultImageView" />
+        app:layout_constraintTop_toBottomOf="@id/imageCard" />
 
     <TextView
         android:id="@+id/textLabel"
@@ -50,70 +60,89 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="이 의심돼요"
-        android:textSize="32sp"
-        android:textStyle="bold"
+        android:textSize="78.79px"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@id/diseaseNameTextView"
         app:layout_constraintBaseline_toBaselineOf="@id/diseaseNameTextView" />
 
-    <!-- 신뢰도 -->
+    <!-- 신뢰도 (한 줄로 표시) -->
     <TextView
         android:id="@+id/confidenceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="92%"
-        android:textSize="48sp"
-        android:textStyle="bold"
+        android:text="98%"
+        android:textSize="161.22px"
         android:textColor="@color/disease_yellow"
+        android:maxLines="1"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/diseaseNameTextView" />
+        app:layout_constraintTop_toTopOf="@id/diseaseNameTextView"
+        app:layout_constraintBottom_toBottomOf="@id/diseaseNameTextView" />
 
-    <!-- 설명 -->
+    <!-- 설명 (검은색) -->
     <TextView
         android:id="@+id/descriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="잎 표면에 처음에는 퇴록한 부정형 반점이 생기고, 감염부위가 담황색을 띕니다."
-        android:textSize="14sp"
-        android:textColor="@color/gray"
+        android:layout_marginTop="16dp"
+        android:text="잎에 3~5mm정도의 회색 균사체가 나타나다가 점차 잎 전체가 밀가루를 뿌린 것처럼 확대돼요."
+        android:textSize="52.43px"
+        android:textColor="@color/black"
+        android:lineSpacingExtra="4dp"
+        android:fontFamily="@font/pretendard_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/diseaseNameTextView" />
 
-    <!-- 스크롤 아래 화살표 (자세히 알아보기) -->
+    <!-- 🔥 자세히 알아보기 영역 (가로 배치) -->
     <LinearLayout
+        android:id="@+id/detailButtonLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="스크롤 하여"
-            android:textSize="14sp"
-            android:textColor="@color/primary_green" />
+        <!-- 화살표 이미지 -->
+        <ImageView
+            android:id="@+id/detailButtonImage"
+            android:layout_width="270px"
+            android:layout_height="183.5px"
+            android:src="@drawable/detail_button_background"
+            android:contentDescription="자세히 알아보기" />
 
-        <TextView
+        <!-- 텍스트 컨테이너 (세로) -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="자세히 알아보기"
-            android:textSize="16sp"
-            android:textColor="@color/primary_green"
-            android:textStyle="bold" />
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="↓ ↓ ↓"
-            android:textSize="20sp"
-            android:textColor="@color/primary_green" />
+            <!-- "스크롤하여" -->
+            <TextView
+                android:id="@+id/scrollText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="스크롤하여"
+                android:textSize="65.53px"
+                android:textColor="@color/primary_green"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="0dp" />
+
+            <!-- "자세히 알아보기" -->
+            <TextView
+                android:id="@+id/detailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자세히 알아보기"
+                android:textSize="94.37px"
+                android:textColor="@color/dark_green"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="0dp" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
