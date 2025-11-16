@@ -2,11 +2,19 @@ package com.example.kotlintest2
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import android.text.Html
+import com.google.firebase.auth.FirebaseAuth
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -16,6 +24,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var signUpButton: Button
     private lateinit var loginText: TextView
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +37,14 @@ class SignUpActivity : AppCompatActivity() {
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText)
         signUpButton = findViewById(R.id.signUpButton)
         loginText = findViewById(R.id.loginText)
+
+        // 로그인 텍스트 설정
+        setupLoginText()
+        // 로그인 밑줄 추가
+        loginText.text = Html.fromHtml(
+            "이미 계정이 있으신가요? <u>로그인</u>",
+            Html.FROM_HTML_MODE_LEGACY
+        )
 
         // 회원가입 버튼 클릭
         signUpButton.setOnClickListener {
@@ -57,23 +74,64 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(this, "비밀번호는 6자 이상이어야 합니다", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    performSignUp(name, email, password)
+                    performSignUp(email, password)
                 }
             }
         }
-
-        // 로그인 화면으로 이동
-        loginText.setOnClickListener {
-            finish() // 현재 액티비티 종료하고 로그인 화면으로 돌아가기
-        }
     }
 
-    private fun performSignUp(name: String, email: String, password: String) {
-// 임시로 회원가입 성공 처리
-// 추후 Firebase Authentication으로 교체 예정
-        Toast.makeText(this, "회원가입 성공!", Toast.LENGTH_SHORT).show()
+    private fun setupLoginText() {
+        val fullText = "이미 계정이 있으신가요? 로그인"
+        val spannableString = SpannableString(fullText)
 
-        // 로그인 화면으로 이동
-        finish()
+        // "로그인" 부분에 클릭 이벤트 적용
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                // LoginActivity로 이동
+                finish() // 현재 액티비티 종료하여 이전 LoginActivity로 돌아가기
+            }
+
+            override fun updateDrawState(ds: android.text.TextPaint) {
+                super.updateDrawState(ds)
+                // 로그인 텍스트 스타일 설정
+                ds.color = ContextCompat.getColor(this@SignUpActivity, R.color.primary_green)
+                ds.isUnderlineText = false // 밑줄 제거
+            }
+        }
+
+        // "로그인" 텍스트의 시작과 끝 인덱스
+        val startIndex = fullText.indexOf("로그인")
+        val endIndex = startIndex + "로그인".length
+
+        spannableString.setSpan(
+            clickableSpan,
+            startIndex,
+            endIndex,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        loginText.text = spannableString
+        loginText.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    private fun performSignUp(email: String, password: String) {
+        auth = FirebaseAuth.getInstance()
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // 회원가입 성공
+                    Toast.makeText(this, "회원가입 성공! 자동으로 로그인됩니다.", Toast.LENGTH_SHORT).show()
+                    navigateToMainActivity()
+                } else {
+                    // 회원가입 실패
+                    Toast.makeText(this, "회원가입 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish() // 로그인 액티비티는 종료하여 뒤로 가기 시 다시 보이지 않도록 함
     }
 }
