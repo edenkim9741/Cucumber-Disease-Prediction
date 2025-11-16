@@ -1,146 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context=".MyInfoActivity">
+    android:background="#FFFFFF">
 
-    <!-- 상단 헤더 -->
     <LinearLayout
-        android:id="@+id/headerLayout"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="@color/primary_green"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!-- 뒤로가기 버튼 -->
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:text="←"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
-
-        <!-- 타이틀 -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="내 정보"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <!-- 균형을 위한 빈 공간 -->
-        <View
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
-
-    </LinearLayout>
-
-    <!-- 프로필 영역 -->
-    <LinearLayout
-        android:id="@+id/profileLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
         android:orientation="vertical"
-        android:padding="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerLayout">
+        android:paddingTop="40dp"
+        android:paddingBottom="24dp">
 
-        <!-- 프로필 아이콘 -->
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/capture_button"
-            android:gravity="center"
-            android:text="👤"
-            android:textSize="40sp" />
+        <!-- 프로필 이미지 -->
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/profile_circle_background"
+            android:background="@drawable/profile_circle_background"
+            android:scaleType="centerCrop" />
 
-        <!-- 이름 -->
+        <!-- 프로필 사진 변경 -->
         <TextView
-            android:id="@+id/nameTextView"
+            android:id="@+id/changeProfileText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:text="사용자"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:text="프로필 사진 변경"
+            android:textColor="#007AFF"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
-        <!-- 이메일 -->
-        <TextView
-            android:id="@+id/emailTextView"
-            android:layout_width="wrap_content"
+        <!-- 빈 공간 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E5E5EA" />
+
+        <!-- 이름 섹션 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="user@example.com"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이름"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:paddingVertical="10dp" />
 
-    <!-- 메뉴 영역 -->
-    <LinearLayout
-        android:id="@+id/menuLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginHorizontal="24dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileLayout">
+            <TextView
+                android:id="@+id/nameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="김오이"
+                android:textSize="17sp"
+                android:textColor="#333333"
+                android:paddingBottom="18dp" />
 
-        <!-- 프로필 수정 버튼 -->
-        <Button
-            android:id="@+id/editProfileButton"
+            <!-- 구분선 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E5E5EA" />
+
+        </LinearLayout>
+
+        <!-- 이메일 섹션 -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:backgroundTint="@android:color/white"
-            android:text="프로필 수정"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:strokeColor="@color/primary_green"
-            app:strokeWidth="1dp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
 
-        <!-- 비밀번호 변경 버튼 -->
-        <Button
-            android:id="@+id/changePasswordButton"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이메일"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:paddingVertical="10dp" />
+
+            <TextView
+                android:id="@+id/emailTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cucumber.jnu.ac.kr"
+                android:textSize="17sp"
+                android:textColor="#333333"
+                android:paddingBottom="18dp" />
+
+            <!-- 구분선 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E5E5EA" />
+
+        </LinearLayout>
+
+        <!-- 비밀번호 변경 -->
+        <TextView
+            android:id="@+id/changePassword"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@android:color/white"
+            android:layout_height="wrap_content"
             android:text="비밀번호 변경"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:strokeColor="@color/primary_green"
-            app:strokeWidth="1dp" />
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="#000000"
+            android:padding="20dp" />
 
-        <!-- 로그아웃 버튼 -->
-        <Button
-            android:id="@+id/logoutButton"
+        <!-- 마지막 구분선 -->
+        <View
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="#FF5252"
-            android:text="로그아웃"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:layout_height="1dp"
+            android:background="#E5E5EA" />
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

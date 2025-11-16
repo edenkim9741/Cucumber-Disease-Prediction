@@ -49,7 +49,8 @@ class MyInfoFragment : Fragment() {
 
         // 내 정보 확인 버튼
         myInfoButton.setOnClickListener {
-            Toast.makeText(context, "내 정보 확인 기능 (추후 구현)", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), MyInfoActivity::class.java)
+            startActivity(intent)
         }
 
         viewHistoryButton.setOnClickListener {
