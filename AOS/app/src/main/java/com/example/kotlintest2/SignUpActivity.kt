@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.text.Html
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.jvm.java
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -40,11 +41,6 @@ class SignUpActivity : AppCompatActivity() {
 
         // 로그인 텍스트 설정
         setupLoginText()
-        // 로그인 밑줄 추가
-        loginText.text = Html.fromHtml(
-            "이미 계정이 있으신가요? <u>로그인</u>",
-            Html.FROM_HTML_MODE_LEGACY
-        )
 
         // 회원가입 버튼 클릭
         signUpButton.setOnClickListener {
