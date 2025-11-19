@@ -96,6 +96,10 @@ class CameraFragment : Fragment() {
 
         cameraFrame = view.findViewById(R.id.cameraFrame)
 
+        captureButton.setOnClickListener {
+            takePhoto()
+        }
+
         val logoText = view.findViewById<TextView>(R.id.appLogo)
 
         // Quantico 폰트 적용
