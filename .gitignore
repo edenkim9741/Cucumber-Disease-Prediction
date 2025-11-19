@@ -404,3 +404,6 @@ DerivedData/
 *.tar.gz
 *.rar
 *.7z
+
+*.pte
+*.ptl
