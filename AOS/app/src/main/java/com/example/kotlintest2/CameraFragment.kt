@@ -30,12 +30,16 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import java.io.File
+import kotlin.text.insert
 
 class CameraFragment : Fragment() {
 
     private lateinit var previewView: PreviewView
     private lateinit var captureButton: ImageButton
     private lateinit var cameraExecutor: ExecutorService
+
+    private lateinit var cameraFrame: View
     private var imageCapture: ImageCapture? = null
 
     private lateinit var predictor: DiseasePredictor
@@ -89,6 +93,8 @@ class CameraFragment : Fragment() {
 
         previewView = view.findViewById(R.id.previewView)
         captureButton = view.findViewById(R.id.captureButton)
+
+        cameraFrame = view.findViewById(R.id.cameraFrame)
 
         val logoText = view.findViewById<TextView>(R.id.appLogo)
 
@@ -188,73 +194,31 @@ class CameraFragment : Fragment() {
             return
         }
 
-        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis())
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
-            }
-        }
+        val viewWidth = previewView.width
+        val viewHeight = previewView.height
 
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(
-            requireActivity().contentResolver,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            contentValues
-        ).build()
+        val frameRect = android.graphics.Rect(
+            cameraFrame.left,
+            cameraFrame.top,
+            cameraFrame.right,
+            cameraFrame.bottom
+        )
 
         imageCapture.takePicture(
-            outputOptions,
             ContextCompat.getMainExecutor(requireContext()),
-            object : ImageCapture.OnImageSavedCallback {
+            object : ImageCapture.OnImageCapturedCallback() {
                 override fun onError(exception: ImageCaptureException) {
                     Log.e(TAG, "사진 촬영 실패: ${exception.message}", exception)
-                    Toast.makeText(context, "사진 촬영 실패", Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    Toast.makeText(context, "사진 촬영 완료!", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "사진이 저장되었습니다: ${output.savedUri}")
-
-                    output.savedUri?.let { uri ->
-
-                        // 추론은 무거운 작업이므로 백그라운드 스레드(cameraExecutor)에서 실행
-                        cameraExecutor.execute {
-                            try {
-                                // 1. 저장된 URI를 Bitmap으로 변환
-                                val bitmap = MediaStore.Images.Media.getBitmap(
-                                    requireActivity().contentResolver,
-                                    uri
-                                )
-
-                                // 2. Predictor로 추론 실행
-                                val prediction = predictor.predict(bitmap)
-
-                                // 3. 결과 로깅 (요청 사항)
-                                if (prediction != null) {
-                                    Log.i(TAG, "--- 추론 결과 ---")
-                                    Log.i(TAG, "URI: $uri")
-                                    Log.i(TAG, "클래스: ${prediction.className}")
-                                    Log.i(TAG, "신뢰도: ${prediction.confidence * 100}%")
-                                    Log.i(TAG, "--------------------")
-
-                                    // 4. 결과 페이지로 이동 (UI 작업이므로 Main 스레드에서 실행)
-                                    activity?.runOnUiThread {
-                                        navigateToResultPage(uri, prediction)
-                                    }
-                                } else {
-                                    Log.e(TAG, "추론 결과가 null입니다.")
-                                    activity?.runOnUiThread {
-                                        Toast.makeText(context, "분석 실패", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-
-                            } catch (e: Exception) {
-                                Log.e(TAG, "추론 또는 비트맵 변환 실패", e)
-                                activity?.runOnUiThread {
-                                    Toast.makeText(context, "분석 중 오류 발생", Toast.LENGTH_SHORT).show()
-                                }
-                            }
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    cameraExecutor.execute {
+                        try {
+                            processAndSaveImage(image, viewWidth, viewHeight, frameRect)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "이미지 처리 실패" , e)
+                        } finally {
+                            image.close()
                         }
                     }
                 }
@@ -266,4 +230,98 @@ class CameraFragment : Fragment() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+    private fun processAndSaveImage(
+        imageProxy: ImageProxy,
+        viewWidth: Int,
+        viewHeight: Int,
+        frameRect: android.graphics.Rect
+    ) {
+        // 1. ImageProxy -> Bitmap 변환
+        val buffer = imageProxy.planes[0].buffer
+        val bytes = ByteArray(buffer.remaining())
+        buffer.get(bytes)
+        val originalBitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+        // 2. 회전 보정 (이미지 센서는 보통 90도 돌아가 있음)
+        val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+        val rotatedBitmap = if (rotationDegrees != 0) {
+            val matrix = android.graphics.Matrix()
+            matrix.postRotate(rotationDegrees.toFloat())
+            android.graphics.Bitmap.createBitmap(
+                originalBitmap, 0, 0, originalBitmap.width, originalBitmap.height, matrix, true
+            )
+        } else {
+            originalBitmap
+        }
+
+        // 3. 크롭 좌표 계산 (화면 뷰 크기 vs 실제 이미지 크기 비율 계산)
+        // PreviewView는 기본적으로 CENTER_CROP (화면 꽉 참) 방식이므로 그에 맞춰 계산
+        val widthRatio = rotatedBitmap.width.toFloat() / viewWidth
+        val heightRatio = rotatedBitmap.height.toFloat() / viewHeight
+        val scale = kotlin.math.min(widthRatio, heightRatio) // 더 큰 비율이 기준
+
+        val scaledViewWidth = viewWidth * scale
+        val scaledViewHeight = viewHeight * scale
+
+        val dx = (rotatedBitmap.width - scaledViewWidth) / 2
+        val dy = (rotatedBitmap.height - scaledViewHeight) / 2
+
+        var cropX = (frameRect.left * scale + dx).toInt()
+        var cropY = (frameRect.top * scale + dy).toInt()
+        var cropW = (frameRect.width() * scale).toInt()
+        var cropH = (frameRect.height() * scale).toInt()
+
+        // 범위 예외 처리
+        if (cropX < 0) cropX = 0
+        if (cropY < 0) cropY = 0
+        if (cropX + cropW > rotatedBitmap.width) cropW = rotatedBitmap.width - cropX
+        if (cropY + cropH > rotatedBitmap.height) cropH = rotatedBitmap.height - cropY
+
+        // 4. 비트맵 자르기 (이것이 최종 저장될 이미지)
+        val croppedBitmap = android.graphics.Bitmap.createBitmap(rotatedBitmap, cropX, cropY, cropW, cropH)
+
+        // 5. 갤러리(MediaStore)에 저장
+        val savedUri = saveBitmapToGallery(croppedBitmap)
+
+        // 6. UI 업데이트 및 추론 시작
+        if (savedUri != null) {
+            // Predictor 추론
+            val prediction = predictor.predict(croppedBitmap)
+
+            activity?.runOnUiThread {
+                Toast.makeText(context, "크롭된 사진 저장 완료!", Toast.LENGTH_SHORT).show()
+                if (prediction != null) {
+                    navigateToResultPage(savedUri, prediction)
+                } else {
+                    Toast.makeText(context, "분석 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun saveBitmapToGallery(bitmap: android.graphics.Bitmap): Uri? {
+        val filename = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis())
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
+            }
+        }
+
+        val resolver = requireContext().contentResolver
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        return uri?.also {
+            resolver.openOutputStream(it).use { outputStream ->
+                if (outputStream != null) {
+                    bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, outputStream)
+                }
+            }
+        }
+    }
 }
+
+
+

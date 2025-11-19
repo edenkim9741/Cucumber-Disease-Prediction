@@ -28,7 +28,7 @@ class DiseasePredictor(private val context: Context) {
         // DINOv2/ImageNet 표준 전처리 값 (학습 때 사용한 값과 동일해야 함)
         private val NORM_MEAN_RGB = floatArrayOf(0.485f, 0.456f, 0.406f)
         private val NORM_STD_RGB = floatArrayOf(0.229f, 0.224f, 0.225f)
-        private val CLASS_NAMES = listOf("노균병", "정상", "흰가루병") // 클래스 순서 중요
+        private val CLASS_NAMES = listOf("병변", "노균병", "정상", "흰가루병") // 클래스 순서 중요
     }
 
     private lateinit var module: Module
@@ -36,7 +36,7 @@ class DiseasePredictor(private val context: Context) {
     // 3. 모델 로드 함수 (Fragment에서 호출)
     fun initModel() {
         try {
-            val modelPath = assetFilePath(context, "model.pte")
+            val modelPath = assetFilePath(context, "model_ood_v1.1.pte")
             Log.i(TAG, "모델 로드 경로: $modelPath")
             module = Module.load(modelPath)
             Log.i(TAG, "모델 로드 성공: $modelPath")
@@ -54,19 +54,29 @@ class DiseasePredictor(private val context: Context) {
         val outputTensor = output[0].toTensor()
         val scores = outputTensor.getDataAsFloatArray()
 
-        //print score in log one by one
-        Log.i(TAG, "모델 추론 결과:")
-        for (i in scores.indices) {
-            Log.i(TAG, "${CLASS_NAMES[i]}: ${scores[i]}")
-        }
 
-
-        // 3️⃣ Softmax 후 가장 높은 확률의 클래스 선택
         val probs = softmax(scores)
         val maxIdx = probs.indices.maxByOrNull { probs[it] } ?: 0
-        val label = CLASS_NAMES[maxIdx]
+        val maxProb = probs[maxIdx] // 가장 높은 확률AAAAAA값
+        val predictedLabel = CLASS_NAMES[maxIdx] // 가장 높은 확률의 라벨
 
-        return PredictionResult(label, probs[maxIdx])
+        //print score in log one by one
+        Log.i(TAG, "모델 추론 결과:")
+        for (i in probs.indices) {
+            Log.i(TAG, "${CLASS_NAMES[i]}: ${probs[i]}")
+        }
+        val threshold = 0.5f
+
+        val finalLabel = if (maxProb > threshold) {
+            predictedLabel
+        } else {
+            "ood" // 확률이 임계값 이하일 경우 OOD 반환
+        }
+
+        // 로그에 최종 결정 기록 (디버깅용)
+        Log.i(TAG, "Final Decision: $finalLabel (Prob: $maxProb, Threshold: $threshold)")
+
+        return PredictionResult(finalLabel, maxProb)
     }
 
     private fun preprocessImage(bitmap: Bitmap): Tensor {
