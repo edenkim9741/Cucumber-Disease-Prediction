@@ -1,5 +1,6 @@
 package com.example.kotlintest2
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,7 +81,17 @@ class HistoryAdapter(
         private val thumbnailImageView: ImageView = itemView.findViewById(R.id.thumbnailImageView)
 
         fun bind(item: HistoryItem, onItemClick: (HistoryItem) -> Unit) {
-            thumbnailImageView.setImageResource(item.imageResId)
+            // URI가 있으면 URI로 로드, 없으면 리소스 ID로 로드
+            if (item.imageUri != null) {
+                try {
+                    val uri = Uri.parse(item.imageUri)
+                    thumbnailImageView.setImageURI(uri)
+                } catch (e: Exception) {
+                    thumbnailImageView.setImageResource(R.drawable.sample_normal1) // 기본 이미지
+                }
+            } else {
+                thumbnailImageView.setImageResource(item.imageResId)
+            }
 
             itemView.setOnClickListener {
                 onItemClick(item)
