@@ -1,0 +1,23 @@
+description: Ultralytics YOLOv12n model trained on D:/jiseong/cucumber/dataset/data.yaml
+author: Ultralytics
+date: '2025-11-19T16:02:47.801387'
+version: 8.3.229
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 224
+- 224
+names:
+  0: Leaf
+  1: Downy
+  2: Powdery
+args:
+  batch: 1
+  fraction: 1.0
+  half: false
+  int8: false
+  nms: false
+channels: 3

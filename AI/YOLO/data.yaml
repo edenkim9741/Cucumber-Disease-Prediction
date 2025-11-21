@@ -1,6 +1,6 @@
 # 1. 데이터셋의 기준 경로
 # 이 경로를 기준으로 train, val 경로를 찾습니다.
-path: # '실제 작업 환경상 데이터셋 경로'
+path: '/home/eden/Data/JNU/cucumber'
 
 # 2. 학습 및 검증 이미지 폴더 경로
 train: images/train
