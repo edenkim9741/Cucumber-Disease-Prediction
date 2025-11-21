@@ -5,11 +5,16 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.jvm.java
 
 class HistoryActivity : AppCompatActivity() {
@@ -23,8 +28,8 @@ class HistoryActivity : AppCompatActivity() {
     private lateinit var filterNormal: Chip
     private lateinit var filterDowny: Chip
     private lateinit var filterPowdery: Chip
+    private lateinit var filterOod: Chip
 
-    private lateinit var filterOod: Chip  // 추가
     private lateinit var historyManager: HistoryManager
 
     private var allHistoryItems: List<HistoryItem> = emptyList()
@@ -43,30 +48,26 @@ class HistoryActivity : AppCompatActivity() {
         filterNormal = findViewById(R.id.filterNormal)
         filterDowny = findViewById(R.id.filterDowny)
         filterPowdery = findViewById(R.id.filterPowdery)
-        filterOod = findViewById(R.id.filterOod)  // 추가
+        filterOod = findViewById(R.id.filterOod)
 
         // HistoryManager 초기화
         historyManager = HistoryManager(this)
 
-        // 데이터 로드 (실제 촬영 사진 + 샘플 데이터)
-        loadHistoryData()
-
         // RecyclerView 설정
         setupRecyclerView()
 
+        // 유효하지 않은 항목 정리 (백그라운드)
+        cleanupInvalidItemsInBackground()
+
         // 버튼 리스너
         backButton.setOnClickListener { finish() }
-
         sortButton.setOnClickListener { showSortDialog() }
 
         // 필터 리스너
         filterNormal.setOnCheckedChangeListener { _, _ -> applyFilters() }
         filterDowny.setOnCheckedChangeListener { _, _ -> applyFilters() }
         filterPowdery.setOnCheckedChangeListener { _, _ -> applyFilters() }
-        filterOod.setOnCheckedChangeListener { _, _ -> applyFilters() }  // 추가
-
-        // 초기 필터 적용
-        applyFilters()
+        filterOod.setOnCheckedChangeListener { _, _ -> applyFilters() }
     }
 
     override fun onResume() {
@@ -76,14 +77,36 @@ class HistoryActivity : AppCompatActivity() {
         applyFilters()
     }
 
+    // 백그라운드에서 유효하지 않은 항목 정리
+    private fun cleanupInvalidItemsInBackground() {
+        lifecycleScope.launch {
+            val removedCount = withContext(Dispatchers.IO) {
+                historyManager.cleanupInvalidItems()
+            }
+
+            // UI 업데이트
+            loadHistoryData()
+            applyFilters()
+
+            // 삭제된 항목이 있으면 알림
+            if (removedCount > 0) {
+                Toast.makeText(
+                    this@HistoryActivity,
+                    "삭제된 사진 ${removedCount}개가 기록에서 제거되었습니다",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
     private fun loadHistoryData() {
         // 실제 촬영 기록 로드
         val realHistory = historyManager.getHistoryItems()
 
-        // 샘플 데이터 (테스트용)
+        // 샘플 데이터
         val sampleHistory = getSampleHistoryData()
 
-        // 합치기 (실제 촬영 사진이 먼저)
+        // 합치기
         allHistoryItems = realHistory + sampleHistory
     }
 
@@ -164,7 +187,6 @@ class HistoryActivity : AppCompatActivity() {
     private fun navigateToResult(historyItem: HistoryItem) {
         val intent = Intent(this, ResultActivity::class.java)
 
-        // URI가 있으면 URI 사용, 없으면 리소스 ID 사용
         if (historyItem.imageUri != null) {
             intent.putExtra("imageUri", historyItem.imageUri)
         } else {

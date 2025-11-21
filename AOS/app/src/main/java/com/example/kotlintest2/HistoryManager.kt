@@ -2,12 +2,14 @@ package com.example.kotlintest2
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
+import android.provider.MediaStore
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HistoryManager(context: Context) {
+class HistoryManager(private val context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences("HistoryPrefs", Context.MODE_PRIVATE)
     private val gson = Gson()
@@ -21,13 +23,9 @@ class HistoryManager(context: Context) {
     fun addHistoryItem(imageUri: String, diseaseName: String, confidence: Int): HistoryItem {
         val currentItems = getHistoryItems().toMutableList()
 
-        // 다음 ID 가져오기
         val nextId = prefs.getInt(KEY_NEXT_ID, 1)
-
-        // 현재 날짜
         val date = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(Date())
 
-        // 새 아이템 생성
         val newItem = HistoryItem(
             id = nextId,
             imageUri = imageUri,
@@ -36,13 +34,8 @@ class HistoryManager(context: Context) {
             date = date
         )
 
-        // 리스트에 추가
-        currentItems.add(0, newItem) // 맨 앞에 추가
-
-        // 저장
+        currentItems.add(0, newItem)
         saveHistoryItems(currentItems)
-
-        // 다음 ID 증가
         prefs.edit().putInt(KEY_NEXT_ID, nextId + 1).apply()
 
         return newItem
@@ -53,6 +46,48 @@ class HistoryManager(context: Context) {
         val json = prefs.getString(KEY_HISTORY, null) ?: return emptyList()
         val type = object : TypeToken<List<HistoryItem>>() {}.type
         return gson.fromJson(json, type)
+    }
+
+    // URI가 유효한지 확인
+    fun isUriValid(uriString: String?): Boolean {
+        if (uriString == null) return false
+
+        return try {
+            val uri = Uri.parse(uriString)
+
+            // ContentResolver로 URI 존재 여부 확인
+            context.contentResolver.openInputStream(uri)?.use {
+                true
+            } ?: false
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    // 유효하지 않은 항목 자동 제거
+    fun cleanupInvalidItems(): Int {
+        val currentItems = getHistoryItems()
+        var removedCount = 0
+
+        val validItems = currentItems.filter { item ->
+            // URI가 있는 항목만 검증 (샘플 데이터는 imageResId 사용)
+            if (item.imageUri != null) {
+                val isValid = isUriValid(item.imageUri)
+                if (!isValid) {
+                    removedCount++
+                }
+                isValid
+            } else {
+                // URI가 없으면 샘플 데이터이므로 유지
+                true
+            }
+        }
+
+        if (removedCount > 0) {
+            saveHistoryItems(validItems)
+        }
+
+        return removedCount
     }
 
     // 히스토리 저장
