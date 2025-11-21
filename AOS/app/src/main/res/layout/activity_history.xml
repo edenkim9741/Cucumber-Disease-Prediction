@@ -42,57 +42,85 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
 
-    <!-- 필터 칩들 -->
-    <com.google.android.material.chip.Chip
-        android:id="@+id/filterNormal"
-        android:layout_width="wrap_content"
+    <!-- 필터 칩들을 HorizontalScrollView로 감싸기 -->
+    <HorizontalScrollView
+        android:id="@+id/filterScrollView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:checkable="true"
-        android:checked="true"
-        android:text="정상"
-        android:textColor="@android:color/black"
-        app:checkedIcon="@android:drawable/checkbox_on_background"
-        app:chipBackgroundColor="@color/chip_background_color"
-        app:chipStrokeColor="@android:color/black"
-        app:chipStrokeWidth="1dp"
+        android:layout_marginEnd="120dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleText" />
+        app:layout_constraintTop_toBottomOf="@id/titleText">
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/filterDowny"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:checkable="true"
-        android:checked="true"
-        android:text="노균병"
-        android:textColor="@android:color/black"
-        app:checkedIcon="@android:drawable/checkbox_on_background"
-        app:chipBackgroundColor="@color/chip_background_color"
-        app:chipStrokeColor="@android:color/black"
-        app:chipStrokeWidth="1dp"
-        app:layout_constraintBottom_toBottomOf="@id/filterNormal"
-        app:layout_constraintStart_toEndOf="@id/filterNormal"
-        app:layout_constraintTop_toTopOf="@id/filterNormal" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/filterPowdery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:checkable="true"
-        android:checked="true"
-        android:text="흰가루병"
-        android:textColor="@android:color/black"
-        app:checkedIcon="@android:drawable/checkbox_on_background"
-        app:chipBackgroundColor="@color/chip_background_color"
-        app:chipStrokeColor="@android:color/black"
-        app:chipStrokeWidth="1dp"
-        app:layout_constraintBottom_toBottomOf="@id/filterNormal"
-        app:layout_constraintStart_toEndOf="@id/filterDowny"
-        app:layout_constraintTop_toTopOf="@id/filterNormal" />
+            <!-- 정상 필터 -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filterNormal"
+                android:layout_width="57dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:checkable="true"
+                android:checked="true"
+                android:text="정상"
+                android:textColor="@android:color/black"
+                app:checkedIcon="@android:drawable/checkbox_on_background"
+                app:chipBackgroundColor="@color/chip_background_color"
+                app:chipStrokeColor="@android:color/black"
+                app:chipStrokeWidth="1dp" />
+
+            <!-- 노균병 필터 -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filterDowny"
+                android:layout_width="57dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:checkable="true"
+                android:checked="true"
+                android:text="노균"
+                android:textColor="@android:color/black"
+                app:checkedIcon="@android:drawable/checkbox_on_background"
+                app:chipBackgroundColor="@color/chip_background_color"
+                app:chipStrokeColor="@android:color/black"
+                app:chipStrokeWidth="1dp" />
+
+            <!-- 흰가루병 필터 -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filterPowdery"
+                android:layout_width="69dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:checkable="true"
+                android:checked="true"
+                android:text="흰가루"
+                android:textColor="@android:color/black"
+                app:checkedIcon="@android:drawable/checkbox_on_background"
+                app:chipBackgroundColor="@color/chip_background_color"
+                app:chipStrokeColor="@android:color/black"
+                app:chipStrokeWidth="1dp" />
+
+            <!-- OOD(알 수 없음) 필터 추가 -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filterOod"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:checked="true"
+                android:text="ood"
+                android:textColor="@android:color/black"
+                app:checkedIcon="@android:drawable/checkbox_on_background"
+                app:chipBackgroundColor="@color/chip_background_color"
+                app:chipStrokeColor="@android:color/black"
+                app:chipStrokeWidth="1dp" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <!-- 정렬 버튼 -->
     <LinearLayout
@@ -106,9 +134,9 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/filterNormal"
+        app:layout_constraintBottom_toBottomOf="@id/filterScrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/filterNormal">
+        app:layout_constraintTop_toTopOf="@id/filterScrollView">
 
         <TextView
             android:id="@+id/sortText"
@@ -141,6 +169,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filterNormal" />
+        app:layout_constraintTop_toBottomOf="@id/filterScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

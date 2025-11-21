@@ -35,6 +35,7 @@ import kotlin.text.insert
 
 class CameraFragment : Fragment() {
 
+    private lateinit var historyManager: HistoryManager
     private lateinit var previewView: PreviewView
     private lateinit var captureButton: ImageButton
     private lateinit var cameraExecutor: ExecutorService
@@ -95,6 +96,9 @@ class CameraFragment : Fragment() {
         captureButton = view.findViewById(R.id.captureButton)
 
         cameraFrame = view.findViewById(R.id.cameraFrame)
+
+        // HistoryManager 초기화 추가
+        historyManager = HistoryManager(requireContext())
 
         captureButton.setOnClickListener {
             takePhoto()
@@ -234,6 +238,7 @@ class CameraFragment : Fragment() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+    // processAndSaveImage 메서드 수정
     private fun processAndSaveImage(
         imageProxy: ImageProxy,
         viewWidth: Int,
@@ -246,7 +251,7 @@ class CameraFragment : Fragment() {
         buffer.get(bytes)
         val originalBitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
-        // 2. 회전 보정 (이미지 센서는 보통 90도 돌아가 있음)
+        // 2. 회전 보정
         val rotationDegrees = imageProxy.imageInfo.rotationDegrees
         val rotatedBitmap = if (rotationDegrees != 0) {
             val matrix = android.graphics.Matrix()
@@ -258,11 +263,10 @@ class CameraFragment : Fragment() {
             originalBitmap
         }
 
-        // 3. 크롭 좌표 계산 (화면 뷰 크기 vs 실제 이미지 크기 비율 계산)
-        // PreviewView는 기본적으로 CENTER_CROP (화면 꽉 참) 방식이므로 그에 맞춰 계산
+        // 3. 크롭 좌표 계산
         val widthRatio = rotatedBitmap.width.toFloat() / viewWidth
         val heightRatio = rotatedBitmap.height.toFloat() / viewHeight
-        val scale = kotlin.math.min(widthRatio, heightRatio) // 더 큰 비율이 기준
+        val scale = kotlin.math.min(widthRatio, heightRatio)
 
         val scaledViewWidth = viewWidth * scale
         val scaledViewHeight = viewHeight * scale
@@ -281,10 +285,10 @@ class CameraFragment : Fragment() {
         if (cropX + cropW > rotatedBitmap.width) cropW = rotatedBitmap.width - cropX
         if (cropY + cropH > rotatedBitmap.height) cropH = rotatedBitmap.height - cropY
 
-        // 4. 비트맵 자르기 (이것이 최종 저장될 이미지)
+        // 4. 비트맵 자르기
         val croppedBitmap = android.graphics.Bitmap.createBitmap(rotatedBitmap, cropX, cropY, cropW, cropH)
 
-        // 5. 갤러리(MediaStore)에 저장
+        // 5. 갤러리에 저장
         val savedUri = saveBitmapToGallery(croppedBitmap)
 
         // 6. UI 업데이트 및 추론 시작
@@ -293,8 +297,15 @@ class CameraFragment : Fragment() {
             val prediction = predictor.predict(croppedBitmap)
 
             activity?.runOnUiThread {
-                Toast.makeText(context, "크롭된 사진 저장 완료!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "사진 저장 완료!", Toast.LENGTH_SHORT).show()
                 if (prediction != null) {
+                    // 히스토리에 저장 (추가된 부분)
+                    historyManager.addHistoryItem(
+                        imageUri = savedUri.toString(),
+                        diseaseName = prediction.className,
+                        confidence = (prediction.confidence * 100).toInt()
+                    )
+
                     navigateToResultPage(savedUri, prediction)
                 } else {
                     Toast.makeText(context, "분석 실패", Toast.LENGTH_SHORT).show()
