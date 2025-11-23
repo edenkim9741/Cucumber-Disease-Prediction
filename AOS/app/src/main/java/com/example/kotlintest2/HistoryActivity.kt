@@ -176,11 +176,11 @@ class HistoryActivity : AppCompatActivity() {
             HistoryItem(1001, R.drawable.sample_normal1, null, "정상", 97, "2025.08.17"),
             HistoryItem(1002, R.drawable.sample_normal2, null, "정상", 93, "2025.08.17"),
             HistoryItem(1003, R.drawable.sample_normal3, null, "정상", 91, "2025.08.10"),
-            HistoryItem(1005, R.drawable.sample_abnormal_n1, null, "노균", 91, "2025.08.17"),
-            HistoryItem(1006, R.drawable.sample_abnormal_n2, null, "노균", 88, "2025.08.10"),
-            HistoryItem(1007, R.drawable.sample_abnormal_n3, null, "노균", 96, "2025.08.10"),
-            HistoryItem(1008, R.drawable.sample_abnormal_w1, null, "흰가루", 91, "2025.08.09"),
-            HistoryItem(1009, R.drawable.sample_abnormal_w2, null, "흰가루", 91, "2025.08.09")
+            HistoryItem(1005, R.drawable.sample_abnormal_n1, null, "노균병", 91, "2025.08.17"),
+            HistoryItem(1006, R.drawable.sample_abnormal_n2, null, "노균병", 88, "2025.08.10"),
+            HistoryItem(1007, R.drawable.sample_abnormal_n3, null, "노균병", 96, "2025.08.10"),
+            HistoryItem(1008, R.drawable.sample_abnormal_w1, null, "흰가루병", 91, "2025.08.09"),
+            HistoryItem(1009, R.drawable.sample_abnormal_w2, null, "흰가루병", 91, "2025.08.09")
         )
     }
 

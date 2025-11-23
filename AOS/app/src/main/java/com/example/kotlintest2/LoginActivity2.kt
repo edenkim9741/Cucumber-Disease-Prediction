@@ -31,8 +31,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var signupText: TextView
-    // 회원가입 버튼을 위한 변수도 추가하는 것이 좋습니다. (UI에 버튼 추가 필요)
-    // private lateinit var signUpButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +123,7 @@ class LoginActivity : AppCompatActivity() {
         signupText.text = spannableString
         signupText.movementMethod = LinkMovementMethod.getInstance()
     }
+
     private fun performLogin(email: String, password: String) {
         // Firebase Auth를 사용하여 이메일과 비밀번호로 로그인
         auth.signInWithEmailAndPassword(email, password)
@@ -140,9 +139,8 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-
-
     private fun navigateToMainActivity() {
+        // ✅ 로그인 시에는 바로 MainActivity로 (가이드는 회원가입 시에만)
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish() // 로그인 액티비티는 종료하여 뒤로 가기 시 다시 보이지 않도록 함

@@ -115,9 +115,9 @@ class SignUpActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // 회원가입 성공
-                    Toast.makeText(this, "회원가입 성공! 자동으로 로그인됩니다.", Toast.LENGTH_SHORT).show()
-                    navigateToMainActivity()
+                    // ✅ 회원가입 성공 - 가이드 페이지로
+                    Toast.makeText(this, "회원가입 성공! 사용 가이드를 시작합니다.", Toast.LENGTH_SHORT).show()
+                    navigateToGuide()
                 } else {
                     // 회원가입 실패
                     Toast.makeText(this, "회원가입 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -125,9 +125,10 @@ class SignUpActivity : AppCompatActivity() {
             }
     }
 
-    private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+    private fun navigateToGuide() {
+        // ✅ 회원가입 후 가이드로 이동
+        val intent = Intent(this, GuideActivity::class.java)
         startActivity(intent)
-        finish() // 로그인 액티비티는 종료하여 뒤로 가기 시 다시 보이지 않도록 함
+        finish()
     }
 }
