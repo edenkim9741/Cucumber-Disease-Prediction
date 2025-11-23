@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:text="QcumbeR"
-            android:textSize="24sp"
+            android:textSize="94.37px"
             android:textStyle="bold" />
 
         <!-- 이런 증상을 보여요 -->
@@ -28,113 +28,256 @@
             android:id="@+id/symptomTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
             android:text="이런 증상을 보여요"
-            android:textSize="20sp"
+            android:textSize="32sp"
             android:textStyle="bold"
             android:textColor="@color/dark_green" />
 
         <!-- 증상 사진 -->
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:layout_marginTop="16dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/detail_downy"
-            android:contentDescription="노균병 증상 사진" />
+            android:contentDescription="노균병 증상 사진"
+            android:scaleType="fitCenter"
+            android:src="@drawable/detail_downy" />
+
 
         <!-- 증상 설명 -->
-        <TextView
-            android:id="@+id/symptomText1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="• 주로 생육 중기 및 후기의 잎에 발생해요."
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/symptomText2"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="60px"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-2dp" />
+
+            <TextView
+                android:id="@+id/symptomText1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="주로 생육 중기 및 후기의 잎에 발생해요."
+                android:textSize="57.67px"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="• 초기에는 잎의 앞면에 퇴록된 작은 부정형 반점이 엷은 황색을 띠고, 잎 뒷면의 병반은 불분명해요."
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/symptomText3"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="60px"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-2dp" />
+
+            <TextView
+                android:id="@+id/symptomText2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="초기에는 잎의 앞면에 퇴록된 작은 부정형 반점이 엷은 황색을 띠고, 잎 뒷면의 병반은 불분명해요."
+                android:textSize="57.67px"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="• 아랫 잎에서 먼저 발생되고, 위로 진전되는데 엽맥에 둘러 쌓인 병반들이 합쳐지면서 커지고 잎이 말라죽어요."
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/symptomText4"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="60px"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-2dp" />
+
+            <TextView
+                android:id="@+id/symptomText3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="아랫 잎에서 먼저 발생되고, 위로 진전되는데 엽맥에 둘러 쌓인 병반들이 합쳐지면서 커지고 잎이 말라죽어요."
+                android:textSize="57.67px"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="• 병든 잎은 잘 찢어지고, 황갈색을 띠어요."
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/symptomText5"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="60px"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-2dp" />
+
+            <TextView
+                android:id="@+id/symptomText4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="병든 잎은 잘 찢어지고, 황갈색을 띠어요."
+                android:textSize="57.67px"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="• 환경이 적당하면 잎 뒷면에 이슬처럼 보이는 곰팡이가 다량 형성되어 회백색으로 보여요."
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
-        <!-- 대처 방법 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="60px"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-2dp" />
+
+            <TextView
+                android:id="@+id/symptomText4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="환경이 적당하면 잎 뒷면에 이슬처럼 보이는 곰팡이가 다량 형성되어 회백색으로 보여요."
+                android:textSize="57.67px"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/actionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="25dp"
             android:text="이렇게 대처해요"
-            android:textSize="20sp"
+            android:textSize="32sp"
             android:textStyle="bold"
             android:textColor="@color/primary_green" />
 
-        <TextView
-            android:id="@+id/actionText1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="• 병든 잎은 조기에 제거하여 불에 태우거나 땅속 깊이 묻어요."
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/actionText2"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="60px"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-2dp" />
+
+            <TextView
+                android:id="@+id/actionText1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="병든 잎은 조기에 제거하여 불에 태우거나 땅속 깊이 묻어요."
+                android:textSize="57.67px"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="• 포장을 청결히 하고 잎에 물방울이 장시간 맺혀 있지 않도록 관리해요."
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/actionText3"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="60px"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-2dp" />
+
+            <TextView
+                android:id="@+id/actionText2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="포장을 청결히 하고 잎에 물방울이 장시간 맺혀 있지 않도록 관리해요."
+                android:textSize="57.67px"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="• 환기를 철저히 하고 토양이 과습하지 않도록 해요."
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="60px"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-2dp" />
+
+            <TextView
+                android:id="@+id/actionText4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="환기를 철저히 하고 토양이 과습하지 않도록 해요."
+                android:textSize="57.67px"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="4dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
 
     </LinearLayout>
-
-</ScrollView>
