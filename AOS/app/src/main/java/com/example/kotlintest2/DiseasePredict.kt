@@ -36,7 +36,7 @@ class DiseasePredictor(private val context: Context) {
     // 3. 모델 로드 함수 (Fragment에서 호출)
     fun initModel() {
         try {
-            val modelPath = assetFilePath(context, "model_ood_v1.1.pte")
+            val modelPath = assetFilePath(context, "mobilenet_v2_cucumber_disease.pte")
             Log.i(TAG, "모델 로드 경로: $modelPath")
             module = Module.load(modelPath)
             Log.i(TAG, "모델 로드 성공: $modelPath")
@@ -65,7 +65,7 @@ class DiseasePredictor(private val context: Context) {
         for (i in probs.indices) {
             Log.i(TAG, "${CLASS_NAMES[i]}: ${probs[i]}")
         }
-        val threshold = 0.5f
+        val threshold = 0.6f
 
         val finalLabel = if (maxProb > threshold) {
             predictedLabel
@@ -80,27 +80,35 @@ class DiseasePredictor(private val context: Context) {
     }
 
     private fun preprocessImage(bitmap: Bitmap): Tensor {
-        // 224x224 크기로 리사이즈
-        val resized = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
+        val width = 224
+        val height = 224
+        val resized = Bitmap.createScaledBitmap(bitmap, height, width, true)
 
-        val inputTensor = FloatArray(1 * 3 * 224 * 224)
+        val inputTensor = FloatArray(1 * 3 * height * width)
         val mean = floatArrayOf(0.485f, 0.456f, 0.406f)
         val std = floatArrayOf(0.229f, 0.224f, 0.225f)
 
-        var idx = 0
-        for (y in 0 until 224) {
-            for (x in 0 until 224) {
-                val pixel = resized.getPixel(x, y)
+        val channelSize = width*height
+
+        val pixels = IntArray(channelSize)
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
+
+        for (y in 0 until height) {
+            for (x in 0 until width) {
+                val idx = y*width + x
+                val pixel = pixels[idx]
                 val r = ((pixel shr 16 and 0xFF) / 255.0f - mean[0]) / std[0]
                 val g = ((pixel shr 8 and 0xFF) / 255.0f - mean[1]) / std[1]
                 val b = ((pixel and 0xFF) / 255.0f - mean[2]) / std[2]
-                inputTensor[idx++] = r
-                inputTensor[idx++] = g
-                inputTensor[idx++] = b
+
+                inputTensor[0*channelSize + idx] = r
+                inputTensor[1*channelSize + idx] = g
+                inputTensor[2*channelSize + idx] = b
+
             }
         }
 
-        val shape = longArrayOf(1, 3, 224, 224)
+        val shape = longArrayOf(1, 3, height.toLong(), width.toLong())
         return Tensor.fromBlob(inputTensor, shape)
     }
 

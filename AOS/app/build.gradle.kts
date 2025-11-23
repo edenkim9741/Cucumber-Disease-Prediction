@@ -88,4 +88,6 @@ dependencies {
 
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.16.0")
 }
