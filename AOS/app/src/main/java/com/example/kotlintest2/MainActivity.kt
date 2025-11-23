@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity() {
         authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user != null) {
-                Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                // 로그인 성공 Toast 제거 - 이미 로그인된 상태는 조용히 진행
+                // 실제 로그인 시에는 LoginActivity에서 Toast가 표시됨
             } else {
                 Toast.makeText(this, "로그 아웃!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, LoginActivity::class.java)
