@@ -38,11 +38,11 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="59dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="30dp"
         android:text="@string/cucumber_leaf_title"
         android:textColor="@color/text_white"
         android:textSize="50sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
 
@@ -51,19 +51,18 @@
         android:id="@+id/descriptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="-5dp"
         android:text="@string/cucumber_leaf_description"
         android:textColor="@color/text_description"
         android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/titleText"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
     <!-- 스와이프 힌트 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="← 내 정보 보기"
+        android:text="← 내 정보 확인"
         android:textColor="@color/text_description"
         android:textSize="12sp"
         android:layout_marginEnd="16dp"
@@ -74,9 +73,9 @@
     <!-- 점선 프레임 -->
     <View
         android:id="@+id/cameraFrame"
-        android:layout_width="280dp"
-        android:layout_height="370dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="350dp"
+        android:layout_height="457dp"
+        android:layout_marginTop="21dp"
         android:background="@drawable/dashed_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,9 +84,9 @@
     <!-- 촬영 버튼 -->
     <ImageButton
         android:id="@+id/captureButton"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="98dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="25dp"
         android:src="@drawable/ic_cucumber"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
@@ -102,7 +101,7 @@
         android:id="@+id/appLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/app_logo"
         android:textColor="@color/primary_green"
         android:textSize="36sp"

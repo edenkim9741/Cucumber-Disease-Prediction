@@ -9,7 +9,7 @@
     <View
         android:id="@+id/statusBarSpace"
         android:layout_width="0dp"
-        android:layout_height="44dp"
+        android:layout_height="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,11 +33,11 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="32dp"
         android:text="나의 오이로그"
-        android:textColor="@color/primary_green"
-        android:textSize="32sp"
+        android:textColor="@color/dark_green"
+        android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
@@ -47,9 +47,9 @@
         android:id="@+id/filterScrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,8 @@
                 android:id="@+id/filterNormal"
                 android:layout_width="57dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="11dp"
                 android:checkable="true"
                 android:checked="true"
                 android:text="정상"
@@ -80,7 +81,7 @@
                 android:id="@+id/filterDowny"
                 android:layout_width="57dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="11dp"
                 android:checkable="true"
                 android:checked="true"
                 android:text="노균"
@@ -95,7 +96,7 @@
                 android:id="@+id/filterPowdery"
                 android:layout_width="69dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="11dp"
                 android:checkable="true"
                 android:checked="true"
                 android:text="흰가루"
@@ -127,23 +128,23 @@
         android:id="@+id/sortButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="-10dp"
+        android:layout_marginEnd="10dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/filterScrollView"
+        android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/filterScrollView">
+        app:layout_constraintTop_toBottomOf="@id/filterScrollView">
 
         <TextView
             android:id="@+id/sortText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="최신순"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             android:textSize="14sp" />
 
         <TextView
@@ -161,14 +162,14 @@
         android:id="@+id/historyRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="-10dp"
         android:clipToPadding="false"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filterScrollView" />
+        app:layout_constraintTop_toBottomOf="@id/sortButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
