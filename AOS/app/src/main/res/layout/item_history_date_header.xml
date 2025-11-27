@@ -3,10 +3,10 @@
     android:id="@+id/dateTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="12dp"
-    android:paddingTop="24dp"
+    android:paddingStart="2dp"
+    android:paddingTop="-2dp"
     android:paddingEnd="12dp"
-    android:paddingBottom="12dp"
+    android:paddingBottom="-2dp"
     android:text="2025.08.17"
     android:textColor="@android:color/darker_gray"
-    android:textSize="14sp" />
+    android:textSize="15sp" />

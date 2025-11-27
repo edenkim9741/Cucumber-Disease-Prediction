@@ -41,8 +41,8 @@
 
         <!-- 프로필 아이콘 -->
         <View
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
             android:background="@drawable/profile_circle_background" />
 
     </LinearLayout>
@@ -52,7 +52,7 @@
         android:id="@+id/divider1"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="18dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:background="#E0E0E0"
@@ -65,7 +65,7 @@
         android:id="@+id/myInfoButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:paddingVertical="20dp"
@@ -86,12 +86,7 @@
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=">"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp" />
+
 
     </LinearLayout>
 
@@ -112,7 +107,7 @@
         android:id="@+id/viewHistoryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:paddingVertical="20dp"
@@ -133,12 +128,7 @@
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=">"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp" />
+
 
     </LinearLayout>
 
@@ -159,7 +149,7 @@
         android:id="@+id/logoutButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:paddingVertical="20dp"
@@ -180,12 +170,7 @@
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=">"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp" />
+
 
     </LinearLayout>
 
