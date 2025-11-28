@@ -6,8 +6,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         // 폰트
-        <item name="android:fontFamily">@font/pretendard_bold</item>
-        <item name="fontFamily">@font/pretendard_bold</item>
+        <item name="android:fontFamily"></item>
+        <item name="fontFamily"></item>
         // 입력창 테두리 색상
         <item name="android:textColorHint">@color/gray</item>
         <item name="colorOnSurfaceVariant">@color/gray</item>

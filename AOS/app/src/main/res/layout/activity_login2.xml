@@ -30,7 +30,7 @@
         android:layout_marginTop="0dp"
         android:text="오이 병해 진단 시스템"
         android:textColor="@color/gray"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appTitle" />
