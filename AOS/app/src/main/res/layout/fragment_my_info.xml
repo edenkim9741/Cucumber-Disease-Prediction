@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="김오이"
+            android:fontFamily="@font/pretendard_bold"
             android:textColor="@color/dark_green"
             android:textSize="48sp" />
 
@@ -83,6 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="내 정보 확인"
+            android:fontFamily="@font/pretendard_bold"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -125,6 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="내 기록 확인"
+            android:fontFamily="@font/pretendard_bold"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -167,6 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="로그아웃"
+            android:fontFamily="@font/pretendard_bold"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 

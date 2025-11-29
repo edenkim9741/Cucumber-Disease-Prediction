@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -119,7 +120,10 @@ class ResultFragment : Fragment() {
         diseaseNameTextView.text = diseaseName
         confidenceTextView.text = "${confidence}%"
 
-        // 병해에 따른 색상, 설명, 레이블, 버튼 변경
+        // 글씨체 가져오기
+        val pretendardBold = ResourcesCompat.getFont(requireContext(), R.font.pretendard_bold)
+
+// 병해에 따른 색상, 설명, 레이블, 버튼 변경
         when {
             diseaseName.contains("노균병") -> {
                 val color = resources.getColor(R.color.disease_yellow, null)
@@ -128,6 +132,12 @@ class ResultFragment : Fragment() {
                 textLabel.text = "이 의심돼요"
                 descriptionTextView.text = "잎 표면에 처음에는 퇴록한 부정형 반점이 생기고, 감염부위가 담황색을 띕니다."
                 detailButtonLayout?.visibility = View.VISIBLE
+
+                // 글씨체 적용
+                diseaseNameTextView.typeface = pretendardBold
+                confidenceTextView.typeface = pretendardBold
+                textLabel.typeface = pretendardBold
+                descriptionTextView.typeface = pretendardBold
             }
             diseaseName.contains("흰가루병") -> {
                 val color = resources.getColor(R.color.disease_yellow, null)
@@ -136,6 +146,12 @@ class ResultFragment : Fragment() {
                 textLabel.text = "이 의심돼요"
                 descriptionTextView.text = "잎에 3~5mm정도의 회색 균사체가 나타나다가 점차 잎 전체가 밀가루를 뿌린 것처럼 확대돼요."
                 detailButtonLayout?.visibility = View.VISIBLE
+
+                // 글씨체 적용
+                diseaseNameTextView.typeface = pretendardBold
+                confidenceTextView.typeface = pretendardBold
+                textLabel.typeface = pretendardBold
+                descriptionTextView.typeface = pretendardBold
             }
             diseaseName.contains("정상") -> {
                 val color = resources.getColor(R.color.disease_blue, null)
@@ -144,6 +160,12 @@ class ResultFragment : Fragment() {
                 textLabel.text = "적인 잎입니다"
                 descriptionTextView.text = "정상적인 생육입니다."
                 detailButtonLayout?.visibility = View.GONE
+
+                // 글씨체 적용
+                diseaseNameTextView.typeface = pretendardBold
+                confidenceTextView.typeface = pretendardBold
+                textLabel.typeface = pretendardBold
+                descriptionTextView.typeface = pretendardBold
             }
             else -> {
                 Log.e(TAG, "알 수 없는 병명: $diseaseName (신뢰도: $confidence%)")
@@ -154,6 +176,12 @@ class ResultFragment : Fragment() {
                 textLabel.text = ""
                 descriptionTextView.text = "알 수 없는 진단 결과입니다.\n다시 촬영해주세요."
                 detailButtonLayout?.visibility = View.GONE
+
+                // 글씨체 적용
+                diseaseNameTextView.typeface = pretendardBold
+                confidenceTextView.typeface = pretendardBold
+                textLabel.typeface = pretendardBold
+                descriptionTextView.typeface = pretendardBold
             }
         }
     }
