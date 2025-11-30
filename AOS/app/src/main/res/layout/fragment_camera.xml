@@ -60,17 +60,19 @@
         app:layout_constraintStart_toStartOf="@id/titleText"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
-    <!-- 스와이프 힌트 -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="← 내 정보 확인"
-        android:textColor="@color/text_description"
-        android:textSize="12sp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="12dp"
+    <!-- 삼선 메뉴 버튼 (타이틀 옆) -->
+    <ImageButton
+        android:id="@+id/menuButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/menu"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:contentDescription="메뉴"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
+        app:layout_constraintTop_toTopOf="@id/titleText"
+        app:layout_constraintBottom_toBottomOf="@id/titleText" />
 
     <!-- 점선 프레임 -->
     <View

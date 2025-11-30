@@ -1,25 +1,38 @@
 package com.example.kotlintest2
 
 import android.os.Bundle
-import android.widget.Button
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import kotlin.math.abs
 
 class ResultActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
-    private lateinit var backButton: Button
+
+    // ⭐ 스와이프 제스처 감지기 추가
+    private lateinit var gestureDetector: GestureDetectorCompat
+
+    companion object {
+        // ⭐ 스와이프 임계값
+        private const val SWIPE_THRESHOLD = 100
+        private const val SWIPE_VELOCITY_THRESHOLD = 100
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
 
-        backButton = findViewById(R.id.backButton)
         viewPager = findViewById(R.id.viewPager)
+
+        // ⭐ 제스처 감지기 초기화
+        gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
 
         // Intent로 데이터 받기 (null 허용)
         val imageUriString = intent.getStringExtra("imageUri")
@@ -62,10 +75,38 @@ class ResultActivity : AppCompatActivity() {
         )
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+    }
 
-        // 뒤로가기 버튼
-        backButton.setOnClickListener {
-            finish()
+    // ⭐ 터치 이벤트를 제스처 감지기로 전달
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        gestureDetector.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
+    // ⭐ 스와이프 제스처 리스너
+    inner class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
+        override fun onFling(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
+            if (e1 == null) return false
+
+            val diffX = e2.x - e1.x
+            val diffY = e2.y - e1.y
+
+            // 수평 스와이프가 수직보다 클 때만
+            if (abs(diffX) > abs(diffY)) {
+                if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    // 오른쪽 스와이프 (diffX > 0) → 뒤로가기
+                    if (diffX > 0) {
+                        finish()
+                        return true
+                    }
+                }
+            }
+            return false
         }
     }
 
@@ -78,12 +119,13 @@ class ResultActivity : AppCompatActivity() {
         private val fromHistory: Boolean
     ) : FragmentStateAdapter(fa) {
 
-        // 총 페이지 수 (정상이면 1개, 병해면 2개)
+        // 이 페이지 수 (정상/OOD이면 1개, 병해면 2개)
         override fun getItemCount(): Int {
-            return if (diseaseName.contains("정상")) {
-                1  // 정상이면 ResultFragment만
+            return if (diseaseName.contains("정상") ||
+                diseaseName.equals("ood", ignoreCase = true)) {
+                1  // 정상 또는 OOD이면 ResultFragment만
             } else {
-                2  // 병해면 ResultFragment + DetailFragment
+                2  // 노균병/흰가루병이면 ResultFragment + DetailFragment
             }
         }
 
