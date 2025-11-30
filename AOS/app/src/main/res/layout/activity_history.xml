@@ -38,7 +38,7 @@
         android:text="나의 오이로그"
         android:textColor="@color/dark_green"
         android:textSize="48sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/pretendard_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusBarSpace" />
 
@@ -60,65 +60,36 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <!-- 정상 필터 -->
-            <com.google.android.material.chip.Chip
+            <!-- 정상 -->
+            <ImageView
                 android:id="@+id/filterNormal"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginEnd="11dp"
-                android:checkable="true"
-                android:checked="true"
-                android:text="정상"
-                android:textColor="@android:color/black"
-                app:checkedIcon="@android:drawable/checkbox_on_background"
-                app:chipBackgroundColor="@color/chip_background_color"
-                app:chipStrokeColor="@android:color/black"
-                app:chipStrokeWidth="1dp" />
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/filter_normal_on"
+                android:layout_marginEnd="8dp"/>
 
-            <!-- 노균병 필터 -->
-            <com.google.android.material.chip.Chip
+            <!-- 노균 -->
+            <ImageView
                 android:id="@+id/filterDowny"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="11dp"
-                android:checkable="true"
-                android:checked="true"
-                android:text="노균"
-                android:textColor="@android:color/black"
-                app:checkedIcon="@android:drawable/checkbox_on_background"
-                app:chipBackgroundColor="@color/chip_background_color"
-                app:chipStrokeColor="@android:color/black"
-                app:chipStrokeWidth="1dp" />
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:src="@drawable/filter_downy_on"
+                android:layout_marginEnd="8dp"/>
 
-            <!-- 흰가루병 필터 -->
-            <com.google.android.material.chip.Chip
+            <!-- 흰가루 -->
+            <ImageView
                 android:id="@+id/filterPowdery"
-                android:layout_width="69dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="11dp"
-                android:checkable="true"
-                android:checked="true"
-                android:text="흰가루"
-                android:textColor="@android:color/black"
-                app:checkedIcon="@android:drawable/checkbox_on_background"
-                app:chipBackgroundColor="@color/chip_background_color"
-                app:chipStrokeColor="@android:color/black"
-                app:chipStrokeWidth="1dp" />
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:src="@drawable/filter_powdery_on"
+                android:layout_marginEnd="8dp"/>
 
-            <!-- OOD(알 수 없음) 필터 추가 -->
-            <com.google.android.material.chip.Chip
+            <!-- OOD -->
+            <ImageView
                 android:id="@+id/filterOod"
-                android:layout_width="55dp"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:checked="true"
-                android:text="ood"
-                android:textColor="@android:color/black"
-                app:checkedIcon="@android:drawable/checkbox_on_background"
-                app:chipBackgroundColor="@color/chip_background_color"
-                app:chipStrokeColor="@android:color/black"
-                app:chipStrokeWidth="1dp" />
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/filter_ood_on"/>
 
         </LinearLayout>
     </HorizontalScrollView>
@@ -144,14 +115,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="최신순"
+            android:fontFamily="@font/pretendard_bold"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="↕"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/arrow_button"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
 
