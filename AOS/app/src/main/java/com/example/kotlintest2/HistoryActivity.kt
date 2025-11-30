@@ -2,14 +2,18 @@ package com.example.kotlintest2
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlin.math.abs
 
 class HistoryActivity : AppCompatActivity() {
 
@@ -19,13 +23,11 @@ class HistoryActivity : AppCompatActivity() {
     private lateinit var historyRecyclerView: RecyclerView
     private lateinit var historyAdapter: HistoryAdapter
 
-    // 🔥 Chip → ImageView 로 변경
     private lateinit var filterNormal: ImageView
     private lateinit var filterDowny: ImageView
     private lateinit var filterPowdery: ImageView
     private lateinit var filterOod: ImageView
 
-    // 🔥 체크 상태 Bool 로 관리
     private var normalOn = true
     private var downyOn = true
     private var powderyOn = true
@@ -36,6 +38,15 @@ class HistoryActivity : AppCompatActivity() {
     private var allHistoryItems: List<HistoryItem> = emptyList()
     private var isNewestFirst = true
 
+    // ⭐ 스와이프 제스처 감지기 추가
+    private lateinit var gestureDetector: GestureDetectorCompat
+
+    companion object {
+        // ⭐ 스와이프 임계값
+        private const val SWIPE_THRESHOLD = 100
+        private const val SWIPE_VELOCITY_THRESHOLD = 100
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
@@ -45,7 +56,6 @@ class HistoryActivity : AppCompatActivity() {
         sortText = findViewById(R.id.sortText)
         historyRecyclerView = findViewById(R.id.historyRecyclerView)
 
-        // 🔥 이미지 필터 버튼 연결
         filterNormal = findViewById(R.id.filterNormal)
         filterDowny = findViewById(R.id.filterDowny)
         filterPowdery = findViewById(R.id.filterPowdery)
@@ -53,13 +63,15 @@ class HistoryActivity : AppCompatActivity() {
 
         historyManager = HistoryManager(this)
 
+        // ⭐ 제스처 감지기 초기화
+        gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
+
         setupRecyclerView()
         cleanupInvalidItemsInBackground()
 
         backButton.setOnClickListener { finish() }
         sortButton.setOnClickListener { showSortDialog() }
 
-        // 🔥 클릭 → ON/OFF 토글 + 이미지 변경 + 필터반영
         filterNormal.setOnClickListener {
             normalOn = !normalOn
             filterNormal.setImageResource(if (normalOn) R.drawable.filter_normal_on else R.drawable.filter_normal_off)
@@ -79,6 +91,39 @@ class HistoryActivity : AppCompatActivity() {
             oodOn = !oodOn
             filterOod.setImageResource(if (oodOn) R.drawable.filter_ood_on else R.drawable.filter_ood_off)
             applyFilters()
+        }
+    }
+
+    // ⭐ 터치 이벤트를 제스처 감지기로 전달
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        gestureDetector.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
+    // ⭐ 스와이프 제스처 리스너
+    inner class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
+        override fun onFling(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
+            if (e1 == null) return false
+
+            val diffX = e2.x - e1.x
+            val diffY = e2.y - e1.y
+
+            // 수평 스와이프가 수직보다 클 때만
+            if (abs(diffX) > abs(diffY)) {
+                if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    // 오른쪽 스와이프 (diffX > 0) → 뒤로가기
+                    if (diffX > 0) {
+                        finish()
+                        return true
+                    }
+                }
+            }
+            return false
         }
     }
 
@@ -139,13 +184,11 @@ class HistoryActivity : AppCompatActivity() {
         }
 
         val sortedItems = if (isNewestFirst) {
-            // 🔹 최신순 (날짜 최신 → id 큰 순)
             filteredItems.sortedWith(
                 compareByDescending<HistoryItem> { it.date }
                     .thenByDescending { it.id }
             )
         } else {
-            // 🔹 오래된순 (날짜 오래됨 → id 작은 순)
             filteredItems.sortedWith(
                 compareBy<HistoryItem> { it.date }
                     .thenBy { it.id }
@@ -163,7 +206,6 @@ class HistoryActivity : AppCompatActivity() {
         val newest = view.findViewById<TextView>(R.id.sortNewest)
         val oldest = view.findViewById<TextView>(R.id.sortOldest)
 
-        // 현재 상태 UI 표시
         newest.alpha = if (isNewestFirst) 1f else 0.4f
         oldest.alpha = if (!isNewestFirst) 1f else 0.4f
 

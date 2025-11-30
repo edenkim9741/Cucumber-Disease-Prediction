@@ -5,20 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 뒤로가기 버튼 -->
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="← 뒤로"
-        android:textColor="@color/dark_green"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="8dp"
-        android:stateListAnimator="@null" />
-
     <!-- ViewPager2 (위아래 스크롤) -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

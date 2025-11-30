@@ -31,6 +31,7 @@
         android:text="오이 병해 진단 시스템"
         android:textColor="@color/gray"
         android:textSize="15sp"
+        android:fontFamily="@font/pretendard_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appTitle" />
@@ -48,6 +49,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditText"
+            android:fontFamily="@font/pretendard_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -68,6 +70,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
+            android:fontFamily="@font/pretendard_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -84,6 +87,7 @@
         android:text="로그인"
         android:textColor="@android:color/white"
         android:textSize="20sp"
+        android:fontFamily="@font/pretendard_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passwordInputLayout" />
@@ -97,6 +101,7 @@
         android:text="계정이 없으신가요? 회원가입"
         android:textColor="@color/gray"
         android:textSize="14sp"
+        android:fontFamily="@font/pretendard_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loginButton" />

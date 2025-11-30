@@ -16,7 +16,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -123,7 +122,7 @@ class ResultFragment : Fragment() {
         // 글씨체 가져오기
         val pretendardBold = ResourcesCompat.getFont(requireContext(), R.font.pretendard_bold)
 
-// 병해에 따른 색상, 설명, 레이블, 버튼 변경
+        // 병해에 따른 색상, 설명, 레이블, 버튼 변경
         when {
             diseaseName.contains("노균병") -> {
                 val color = resources.getColor(R.color.disease_yellow, null)
@@ -168,13 +167,14 @@ class ResultFragment : Fragment() {
                 descriptionTextView.typeface = pretendardBold
             }
             else -> {
+                // ⭐ OOD 케이스 - 설명 수정
                 Log.e(TAG, "알 수 없는 병명: $diseaseName (신뢰도: $confidence%)")
 
                 val color = resources.getColor(R.color.gray, null)
                 diseaseNameTextView.setTextColor(color)
                 confidenceTextView.setTextColor(color)
                 textLabel.text = ""
-                descriptionTextView.text = "알 수 없는 진단 결과입니다.\n다시 촬영해주세요."
+                descriptionTextView.text = "오이 잎을 정확하게 다시 찍어주세요.\n정확히 촬영했다면 다른 질병에 걸린 상태일 수 있어요."
                 detailButtonLayout?.visibility = View.GONE
 
                 // 글씨체 적용

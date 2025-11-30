@@ -20,6 +20,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -38,6 +39,7 @@ class CameraFragment : Fragment() {
     private lateinit var historyManager: HistoryManager
     private lateinit var previewView: PreviewView
     private lateinit var captureButton: ImageButton
+    private lateinit var menuButton: ImageButton  // 메뉴 버튼 추가
     private lateinit var cameraExecutor: ExecutorService
 
     private lateinit var cameraFrame: View
@@ -94,6 +96,7 @@ class CameraFragment : Fragment() {
 
         previewView = view.findViewById(R.id.previewView)
         captureButton = view.findViewById(R.id.captureButton)
+        menuButton = view.findViewById(R.id.menuButton)  // 메뉴 버튼 연결
 
         cameraFrame = view.findViewById(R.id.cameraFrame)
 
@@ -102,6 +105,11 @@ class CameraFragment : Fragment() {
 
         captureButton.setOnClickListener {
             takePhoto()
+        }
+
+        // 메뉴 버튼 클릭 시 내 정보 페이지로 이동
+        menuButton.setOnClickListener {
+            navigateToMyInfo()
         }
 
         val logoText = view.findViewById<TextView>(R.id.appLogo)
@@ -141,10 +149,16 @@ class CameraFragment : Fragment() {
         }
     }
 
+    // 내 정보 페이지로 이동하는 함수
+    private fun navigateToMyInfo() {
+        val viewPager = activity?.findViewById<ViewPager2>(R.id.viewPager)
+        viewPager?.setCurrentItem(1, true)  // 1번 인덱스 = MyInfoFragment
+    }
+
     override fun onResume() {
         super.onResume()
         if (allPermissionsGranted()) {
-            startCamera()   // 🔥 복귀 시 카메라 재시작
+            startCamera()   // 복귀 시 카메라 재시작
         }
     }
 
@@ -152,7 +166,7 @@ class CameraFragment : Fragment() {
         super.onPause()
         try {
             val cameraProvider = ProcessCameraProvider.getInstance(requireContext()).get()
-            cameraProvider.unbindAll()  // 🔥 떠날 때 카메라 해제
+            cameraProvider.unbindAll()  // 떠날 때 카메라 해제
         } catch (_: Exception) {}
     }
 
@@ -337,6 +351,3 @@ class CameraFragment : Fragment() {
         }
     }
 }
-
-
-
