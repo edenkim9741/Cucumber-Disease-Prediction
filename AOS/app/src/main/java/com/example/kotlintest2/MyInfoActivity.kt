@@ -24,6 +24,7 @@ class MyInfoActivity : AppCompatActivity() {
     private lateinit var changeProfileText: TextView
     private lateinit var changePasswordText: TextView
     private lateinit var profileImage: ImageView
+    private lateinit var deleteAccountText: TextView
 
     // 스와이프 제스처 감지기
     private lateinit var gestureDetector: GestureDetectorCompat
@@ -48,6 +49,8 @@ class MyInfoActivity : AppCompatActivity() {
         changeProfileText = findViewById(R.id.changeProfileText)
         changePasswordText = findViewById(R.id.changePassword)
         profileImage = findViewById(R.id.profileImage)
+        deleteAccountText = findViewById(R.id.deleteAccountText)
+
 
         // 제스처 감지기 초기화
         gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
@@ -68,8 +71,52 @@ class MyInfoActivity : AppCompatActivity() {
         changePasswordText.setOnClickListener {
             showChangePasswordDialog()
         }
+
+        deleteAccountText.setOnClickListener {
+            showDeleteAccountDialog()
+        }
     }
 
+    private fun showDeleteAccountDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("회원 탈퇴")
+            .setMessage("정말로 탈퇴하시겠습니까?\n계정 정보가 즉시 삭제되며 복구할 수 없습니다.")
+            .setPositiveButton("탈퇴") { _, _ ->
+                performDeleteAccount()
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
+    private fun performDeleteAccount() {
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            currentUser.delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // 삭제 성공
+                        Toast.makeText(this, "회원 탈퇴가 완료되었습니다.", Toast.LENGTH_LONG).show()
+
+                        // 로그인 화면으로 이동
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish() // 현재 액티비티 종료
+                    } else {
+                        // 삭제 실패
+                        val errorMessage = task.exception?.message ?: "삭제 실패"
+
+                        // [중요] 로그인한 지 오래되어 재인증이 필요한 경우
+                        if (errorMessage.contains("recent login", ignoreCase = true)) {
+                            Toast.makeText(this, "보안을 위해 다시 로그인 후 탈퇴해주세요.", Toast.LENGTH_LONG).show()
+                            logout() // 로그아웃 시켜서 재로그인 유도
+                        } else {
+                            Toast.makeText(this, "오류 발생: $errorMessage", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+        }
+    }
     // ------------------------------
     // ⭐ 비밀번호 변경 다이얼로그 및 로직
     // ------------------------------

@@ -127,6 +127,21 @@
             android:layout_height="1dp"
             android:background="#E5E5EA" />
 
+        <TextView
+            android:id="@+id/deleteAccountText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="회원 탈퇴"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="17sp"
+            android:textColor="#FF3B30"
+            android:padding="20dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E5E5EA" />
+
     </LinearLayout>
 
 </ScrollView>
