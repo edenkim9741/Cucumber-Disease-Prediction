@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.text.Html
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlin.jvm.java
 
 class SignUpActivity : AppCompatActivity() {
@@ -70,7 +71,7 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(this, "비밀번호는 6자 이상이어야 합니다", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    performSignUp(email, password)
+                    performSignUp(name, email, password)
                 }
             }
         }
@@ -110,14 +111,28 @@ class SignUpActivity : AppCompatActivity() {
         loginText.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    private fun performSignUp(email: String, password: String) {
+    private fun performSignUp(name: String, email: String, password: String) {
         auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // ✅ 회원가입 성공 - 가이드 페이지로
-                    Toast.makeText(this, "회원가입 성공! 사용 가이드를 시작합니다.", Toast.LENGTH_SHORT).show()
-                    navigateToGuide()
+                    val user = auth.currentUser
+
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build()
+
+                    user?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener { updateTask ->
+                            if (updateTask.isSuccessful) {
+                                Toast.makeText(this, "회원가입 성공! ${name}님 환영합니다.", Toast.LENGTH_SHORT).show()
+                                navigateToGuide()
+                            } else {
+                                // 계정은 만들어졌으나 이름 저장 실패 (드문 경우)
+                                Toast.makeText(this, "회원가입은 되었으나 이름 설정에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                navigateToGuide() // 계정은 있으므로 다음으로 진행
+                            }
+                        }
                 } else {
                     // 회원가입 실패
                     Toast.makeText(this, "회원가입 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
