@@ -20,7 +20,7 @@ class CameraOverlayView @JvmOverloads constructor(
         xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
 
-    private val cornerRadius = 24f * resources.displayMetrics.density
+    private val cornerRadius = 27f * resources.displayMetrics.density
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -31,8 +31,8 @@ class CameraOverlayView @JvmOverloads constructor(
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), overlayPaint)
 
         // 가운데 투명한 둥근 사각형
-        val frameWidth = 341 * resources.displayMetrics.density
-        val frameHeight = 449 * resources.displayMetrics.density
+        val frameWidth = 340 * resources.displayMetrics.density
+        val frameHeight = 448 * resources.displayMetrics.density
         val left = (width - frameWidth) / 2
         val top = (height - frameHeight) / 2
         val right = left + frameWidth

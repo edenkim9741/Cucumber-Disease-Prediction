@@ -33,12 +33,13 @@
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="0dp"
+            android:layout_marginStart="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="김오이"
             android:fontFamily="@font/pretendard_bold"
             android:textColor="@color/dark_green"
-            android:textSize="48sp" />
+            android:textSize="52sp" />
 
         <!-- 프로필 아이콘 -->
         <View
