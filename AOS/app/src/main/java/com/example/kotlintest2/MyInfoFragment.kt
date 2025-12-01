@@ -14,12 +14,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 
+
 class MyInfoFragment : Fragment() {
 
     private lateinit var nameTextView: TextView
     private lateinit var myInfoButton: LinearLayout
     private lateinit var logoutButton: LinearLayout
     private lateinit var viewHistoryButton: LinearLayout
+    private lateinit var auth: FirebaseAuth
+
+
 
     companion object {
         private const val PREFS_NAME = "QcumbeRPrefs"
@@ -43,6 +47,8 @@ class MyInfoFragment : Fragment() {
         myInfoButton = view.findViewById(R.id.myInfoButton)
         logoutButton = view.findViewById(R.id.logoutButton)
         viewHistoryButton = view.findViewById(R.id.viewHistoryButton)
+        auth = FirebaseAuth.getInstance()
+
 
 
         loadUserInfo()
@@ -65,11 +71,14 @@ class MyInfoFragment : Fragment() {
     }
 
     private fun loadUserInfo() {
-        val prefs = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val email = prefs.getString(KEY_USER_EMAIL, "user@example.com") ?: "user@example.com"
-        val name = prefs.getString(KEY_USER_NAME, "김오이") ?: "김오이"
+        // onCreate에서 auth를 초기화했으므로 여기선 바로 사용
+        val currentUser = auth.currentUser
 
-        nameTextView.text = name
+        if (currentUser != null) {
+            nameTextView.text = currentUser.displayName ?: "User"
+        } else {
+            Log.d("MyInfoActivity", "loadUserInfo: currentUser is null")
+        }
     }
 
     private fun showLogoutDialog() {
