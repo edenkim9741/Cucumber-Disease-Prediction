@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import com.google.firebase.auth.FirebaseAuth
 import kotlin.math.abs
-
 class MyInfoActivity : AppCompatActivity() {
 
     private lateinit var nameTextView: TextView
@@ -25,6 +24,8 @@ class MyInfoActivity : AppCompatActivity() {
 
     // ⭐ 스와이프 제스처 감지기 추가
     private lateinit var gestureDetector: GestureDetectorCompat
+
+    private lateinit var auth: FirebaseAuth
 
     companion object {
         private const val PREFS_NAME = "QcumbeRPrefs"
@@ -106,12 +107,18 @@ class MyInfoActivity : AppCompatActivity() {
     // 사용자 정보 로드
     // ------------------------------
     private fun loadUserInfo() {
-        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val email = prefs.getString(KEY_USER_EMAIL, "user@example.com") ?: "user@example.com"
-        val name = prefs.getString(KEY_USER_NAME, "사용자") ?: "사용자"
+        auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
 
-        nameTextView.text = name
-        emailTextView.text = email
+        if (currentUser != null) {
+            nameTextView.text = currentUser.displayName ?: "User"
+            emailTextView.text = currentUser.email ?: "email"
+        }
+        else {
+            Log.d("MainActivity", "loadUserInfo: currentUser is null")
+            Toast.makeText(this, "사용자 정보 로드 실패", Toast.LENGTH_SHORT).show()
+            finish()
+        }
     }
 
     // ------------------------------
