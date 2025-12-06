@@ -120,8 +120,8 @@
             android:textSize="14sp" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="12dp"
+            android:layout_height="22dp"
             android:layout_marginStart="5dp"
             android:src="@drawable/arrow_button"
             android:textColor="@android:color/darker_gray"
