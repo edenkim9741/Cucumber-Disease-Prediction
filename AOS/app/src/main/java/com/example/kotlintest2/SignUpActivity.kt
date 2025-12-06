@@ -77,6 +77,11 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
+
     private fun setupLoginText() {
         val fullText = "이미 계정이 있으신가요? 로그인"
         val spannableString = SpannableString(fullText)

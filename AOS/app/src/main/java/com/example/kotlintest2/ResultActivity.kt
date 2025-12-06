@@ -2,6 +2,7 @@ package com.example.kotlintest2
 
 import android.os.Bundle
 import android.view.GestureDetector
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -75,6 +76,18 @@ class ResultActivity : AppCompatActivity() {
         )
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+    }
+
+    // ⭐ 볼륨 다운 버튼으로 뒤로가기
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                // 뒤로가기 (CameraFragment로 돌아감)
+                finish()
+                true
+            }
+            else -> super.onKeyDown(keyCode, event)
+        }
     }
 
     // ⭐ 터치 이벤트를 제스처 감지기로 전달
