@@ -17,11 +17,11 @@ class ResultActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
 
-    // ⭐ 스와이프 제스처 감지기 추가
+    // 스와이프 제스처 감지기 추가
     private lateinit var gestureDetector: GestureDetectorCompat
 
     companion object {
-        // ⭐ 스와이프 임계값
+        // 스와이프 임계값
         private const val SWIPE_THRESHOLD = 100
         private const val SWIPE_VELOCITY_THRESHOLD = 100
     }
@@ -32,7 +32,7 @@ class ResultActivity : AppCompatActivity() {
 
         viewPager = findViewById(R.id.viewPager)
 
-        // ⭐ 제스처 감지기 초기화
+        // 제스처 감지기 초기화
         gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
 
         // Intent로 데이터 받기 (null 허용)
@@ -78,7 +78,7 @@ class ResultActivity : AppCompatActivity() {
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
     }
 
-    // ⭐ 볼륨 다운 버튼으로 뒤로가기
+    // 볼륨 다운 버튼으로 뒤로가기
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         return when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
@@ -90,13 +90,13 @@ class ResultActivity : AppCompatActivity() {
         }
     }
 
-    // ⭐ 터치 이벤트를 제스처 감지기로 전달
+    // 터치 이벤트를 제스처 감지기로 전달
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         gestureDetector.onTouchEvent(ev)
         return super.dispatchTouchEvent(ev)
     }
 
-    // ⭐ 스와이프 제스처 리스너
+    // 스와이프 제스처 리스너
     inner class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onFling(
             e1: MotionEvent?,
@@ -132,11 +132,12 @@ class ResultActivity : AppCompatActivity() {
         private val fromHistory: Boolean
     ) : FragmentStateAdapter(fa) {
 
-        // 이 페이지 수 (정상/OOD이면 1개, 병해면 2개)
+        // 페이지 수 (정상/ood/병변이면 1개, 노균병/흰가루병이면 2개)
         override fun getItemCount(): Int {
             return if (diseaseName.contains("정상") ||
-                diseaseName.equals("ood", ignoreCase = true)) {
-                1  // 정상 또는 OOD이면 ResultFragment만
+                diseaseName.equals("ood", ignoreCase = true) ||
+                diseaseName.contains("병변")) {
+                1  // 정상, ood, 병변이면 ResultFragment만
             } else {
                 2  // 노균병/흰가루병이면 ResultFragment + DetailFragment
             }
