@@ -98,7 +98,34 @@ class CameraFragment : Fragment() {
         captureButton = view.findViewById(R.id.captureButton)
         menuButton = view.findViewById(R.id.menuButton)  // 메뉴 버튼 연결
 
+        // ① 뷰들 찾기
         cameraFrame = view.findViewById(R.id.cameraFrame)
+        val cameraOverlay = view.findViewById<CameraOverlayView>(R.id.cameraOverlay)
+
+        // ② cameraFrame이 화면에 배치된 후 실행
+        cameraFrame.post {
+            // 점선 프레임의 실제 위치 측정
+            val location = IntArray(2)
+            cameraFrame.getLocationOnScreen(location)
+
+            // 오버레이도 위치 측정
+            val overlayLocation = IntArray(2)
+            cameraOverlay.getLocationOnScreen(overlayLocation)
+
+            // 상대 좌표 계산 (오버레이 기준으로)
+            val left = (location[0] - overlayLocation[0]).toFloat()
+            val top = (location[1] - overlayLocation[1]).toFloat()
+            val right = left + cameraFrame.width.toFloat()
+            val bottom = top + cameraFrame.height.toFloat()
+
+            val cornerRadius = 40f * resources.displayMetrics.density
+
+            // 오버레이에게 "여기에 투명 영역 그려줘" 전달
+            cameraOverlay.setFrameRect(
+                android.graphics.RectF(left, top, right, bottom),
+                cornerRadius
+            )
+        }
 
         // HistoryManager 초기화 추가
         historyManager = HistoryManager(requireContext())

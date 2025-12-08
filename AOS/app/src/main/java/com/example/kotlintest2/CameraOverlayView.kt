@@ -20,26 +20,28 @@ class CameraOverlayView @JvmOverloads constructor(
         xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
 
-    private val cornerRadius = 27f * resources.displayMetrics.density
+    private var frameRect: RectF? = null // 투명 영역 위치 저장
+    private var frameCornerRadius = 0f
+
+    // CameraFragment에서 호출
+    fun setFrameRect(rect: RectF, cornerRadius: Float) {
+        this.frameRect = rect
+        this.frameCornerRadius = cornerRadius
+        invalidate() // "다시 그려!" 명령
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         val saveCount = canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null)
 
-        // 전체 어두운 배경
+        // ① 전체를 검은색 반투명으로 칠함
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), overlayPaint)
 
-        // 가운데 투명한 둥근 사각형
-        val frameWidth = 340 * resources.displayMetrics.density
-        val frameHeight = 448 * resources.displayMetrics.density
-        val left = (width - frameWidth) / 2
-        val top = (height - frameHeight) / 2
-        val right = left + frameWidth
-        val bottom = top + frameHeight
-
-        val rect = RectF(left, top, right, bottom)
-        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, clearPaint)
+        // ② frameRect 위치만 투명하게 뚫음
+        frameRect?.let { rect ->
+            canvas.drawRoundRect(rect, frameCornerRadius, frameCornerRadius, clearPaint)
+        }
 
         canvas.restoreToCount(saveCount)
     }
