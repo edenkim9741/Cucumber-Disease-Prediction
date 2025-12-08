@@ -124,20 +124,29 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private inner class ResultPagerAdapter(
-        fa: FragmentActivity,
+        private val fragmentActivity: FragmentActivity,
         private val imageUri: String?,
         private val imageResId: Int,
         private val diseaseName: String,
         private val confidence: Int,
         private val fromHistory: Boolean
-    ) : FragmentStateAdapter(fa) {
+    ) : FragmentStateAdapter(fragmentActivity) {
 
-        // 페이지 수 (정상/ood/병변이면 1개, 노균병/흰가루병이면 2개)
+        // 이 페이지 수 (정상/OOD/병변이면 1개, 병해면 2개)
+        // 간단모드일 때는 항상 1페이지만
         override fun getItemCount(): Int {
+            // 간단모드 확인
+            val isSimpleMode = SimpleModeManager.isSimpleMode(fragmentActivity)
+
+            if (isSimpleMode) {
+                return 1  // 간단모드: 항상 1페이지
+            }
+
+            // 일반모드: 기존 로직
             return if (diseaseName.contains("정상") ||
                 diseaseName.equals("ood", ignoreCase = true) ||
                 diseaseName.contains("병변")) {
-                1  // 정상, ood, 병변이면 ResultFragment만
+                1  // 정상, OOD, 병변이면 ResultFragment만
             } else {
                 2  // 노균병/흰가루병이면 ResultFragment + DetailFragment
             }
