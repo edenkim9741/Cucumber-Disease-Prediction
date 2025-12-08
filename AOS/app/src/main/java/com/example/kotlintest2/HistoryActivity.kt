@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlin.collections.filter
 import kotlin.math.abs
 
 class HistoryActivity : AppCompatActivity() {
@@ -180,7 +181,7 @@ class HistoryActivity : AppCompatActivity() {
             (normalOn && item.diseaseName.contains("정상")) ||
                     (downyOn && item.diseaseName.contains("노균")) ||
                     (powderyOn && item.diseaseName.contains("흰가루")) ||
-                    (oodOn && (item.diseaseName.contains("ood", true) || item.diseaseName.contains("알 수 없음")))
+                    (oodOn && (item.diseaseName.contains("병변")))
         }
 
         val sortedItems = if (isNewestFirst) {
