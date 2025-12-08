@@ -17,6 +17,7 @@
 
     <!-- 커스텀 오버레이 (안쪽 둥글게) -->
     <com.example.kotlintest2.CameraOverlayView
+        android:id="@+id/cameraOverlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
