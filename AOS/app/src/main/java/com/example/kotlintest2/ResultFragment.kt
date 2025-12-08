@@ -115,14 +115,49 @@ class ResultFragment : Fragment() {
             }
         }
 
-        // 진단 결과 표시
+        // ⭐ 간단모드 확인
+        val isSimpleMode = SimpleModeManager.isSimpleMode(requireContext())
+
+        if (isSimpleMode) {
+            // ⭐ 간단모드 UI 적용
+            applySimpleModeUI(
+                diseaseNameTextView,
+                confidenceTextView,
+                textLabel,
+                descriptionTextView,
+                detailButtonLayout,
+                diseaseName,
+                confidence
+            )
+        } else {
+            // 일반모드 - 기존 코드
+            applyNormalModeUI(
+                diseaseNameTextView,
+                confidenceTextView,
+                textLabel,
+                descriptionTextView,
+                detailButtonLayout,
+                diseaseName,
+                confidence
+            )
+        }
+    }
+
+    // 일반모드 UI (기존 코드)
+    private fun applyNormalModeUI(
+        diseaseNameTextView: TextView,
+        confidenceTextView: TextView,
+        textLabel: TextView,
+        descriptionTextView: TextView,
+        detailButtonLayout: LinearLayout?,
+        diseaseName: String,
+        confidence: Int
+    ) {
         diseaseNameTextView.text = diseaseName
         confidenceTextView.text = "${confidence}%"
 
-        // 글씨체 가져오기
         val pretendardBold = ResourcesCompat.getFont(requireContext(), R.font.pretendard_bold)
 
-        // 병해에 따른 색상, 설명, 레이블, 버튼 변경
         when {
             diseaseName.contains("노균병") -> {
                 val color = resources.getColor(R.color.disease_yellow, null)
@@ -132,7 +167,6 @@ class ResultFragment : Fragment() {
                 descriptionTextView.text = "잎 표면에 처음에는 퇴록한 부정형 반점이 생기고, 감염부위가 담황색을 띕니다."
                 detailButtonLayout?.visibility = View.VISIBLE
 
-                // 글씨체 적용
                 diseaseNameTextView.typeface = pretendardBold
                 confidenceTextView.typeface = pretendardBold
                 textLabel.typeface = pretendardBold
@@ -146,7 +180,6 @@ class ResultFragment : Fragment() {
                 descriptionTextView.text = "잎에 3~5mm정도의 회색 균사체가 나타나다가 점차 잎 전체가 밀가루를 뿌린 것처럼 확대돼요."
                 detailButtonLayout?.visibility = View.VISIBLE
 
-                // 글씨체 적용
                 diseaseNameTextView.typeface = pretendardBold
                 confidenceTextView.typeface = pretendardBold
                 textLabel.typeface = pretendardBold
@@ -157,36 +190,32 @@ class ResultFragment : Fragment() {
                 diseaseNameTextView.setTextColor(color)
                 confidenceTextView.setTextColor(color)
                 textLabel.text = "적인 잎입니다"
+                textLabel.setTextColor(resources.getColor(android.R.color.black, null)) // ⭐ 검은색
                 descriptionTextView.text = "정상적인 생육입니다."
                 detailButtonLayout?.visibility = View.GONE
 
-                // 글씨체 적용
                 diseaseNameTextView.typeface = pretendardBold
                 confidenceTextView.typeface = pretendardBold
                 textLabel.typeface = pretendardBold
                 descriptionTextView.typeface = pretendardBold
             }
-            // 병변 케이스 추가
             diseaseName.contains("병변") -> {
                 val color = resources.getColor(R.color.disease_yellow, null)
                 diseaseNameTextView.setTextColor(color)
                 confidenceTextView.setTextColor(color)
-                diseaseNameTextView.text = "기타 질병" // 병명을 "기타 질병"으로 변경
+                diseaseNameTextView.text = "기타 질병"
                 textLabel.text = "이 의심돼요"
                 descriptionTextView.text = "오이 잎이 질병에 노출된 상태로 보여요."
                 detailButtonLayout?.visibility = View.GONE
 
-                // 글씨체 적용
                 diseaseNameTextView.typeface = pretendardBold
                 confidenceTextView.typeface = pretendardBold
                 textLabel.typeface = pretendardBold
                 descriptionTextView.typeface = pretendardBold
             }
-            // OOD 케이스
             diseaseName.equals("ood", ignoreCase = true) -> {
                 Log.e(TAG, "OOD (신뢰도: $confidence%)")
 
-                // 병명을 빈 문자열로 설정
                 diseaseNameTextView.text = ""
 
                 val color = resources.getColor(R.color.gray, null)
@@ -196,16 +225,13 @@ class ResultFragment : Fragment() {
                 descriptionTextView.text = "오이 잎이 인식되지 않았습니다. 오이 잎을 정확히 촬영해주세요."
                 detailButtonLayout?.visibility = View.GONE
 
-                // 글씨체 적용
                 confidenceTextView.typeface = pretendardBold
                 textLabel.typeface = pretendardBold
                 descriptionTextView.typeface = pretendardBold
             }
-            // 기타 예외 케이스 (안전장치)
             else -> {
                 Log.e(TAG, "예상치 못한 병명: $diseaseName (신뢰도: $confidence%)")
 
-                // 병명을 빈 문자열로 설정 (GONE 대신)
                 diseaseNameTextView.text = ""
 
                 val color = resources.getColor(R.color.gray, null)
@@ -215,9 +241,151 @@ class ResultFragment : Fragment() {
                 descriptionTextView.text = "오이 잎이 인식되지 않았습니다. 오이 잎을 정확히 촬영해주세요."
                 detailButtonLayout?.visibility = View.GONE
 
-                // 글씨체 적용
                 confidenceTextView.typeface = pretendardBold
                 textLabel.typeface = pretendardBold
+                descriptionTextView.typeface = pretendardBold
+            }
+        }
+    }
+
+    // ⭐ 간단모드 UI (큰 글씨, 핵심 정보만)
+    private fun applySimpleModeUI(
+        diseaseNameTextView: TextView,
+        confidenceTextView: TextView,
+        textLabel: TextView,
+        descriptionTextView: TextView,
+        detailButtonLayout: LinearLayout?,
+        diseaseName: String,
+        confidence: Int
+    ) {
+        val pretendardBold = ResourcesCompat.getFont(requireContext(), R.font.pretendard_bold)
+
+        // ⭐ 상세 버튼 항상 숨김
+        detailButtonLayout?.visibility = View.GONE
+
+        when {
+            diseaseName.contains("노균병") -> {
+                val color = resources.getColor(R.color.disease_yellow, null)
+
+                diseaseNameTextView.text = "노균병"
+                diseaseNameTextView.setTextColor(color)
+                diseaseNameTextView.textSize = 32f
+                diseaseNameTextView.typeface = pretendardBold
+
+                confidenceTextView.text = "$confidence%"
+                confidenceTextView.setTextColor(color)
+                confidenceTextView.textSize = 52f
+                confidenceTextView.typeface = pretendardBold
+
+                textLabel.text = "의심"
+                textLabel.textSize = 32f
+                textLabel.typeface = pretendardBold
+
+                descriptionTextView.text = "잎 표면에 처음에는 퇴록한 부정형 반점이 생기고, 감염부위가 담황색을 띕니다."
+                descriptionTextView.textSize = 20f
+                descriptionTextView.typeface = pretendardBold
+            }
+
+            diseaseName.contains("흰가루병") -> {
+                val color = resources.getColor(R.color.disease_yellow, null)
+
+                diseaseNameTextView.text = "흰가루병"
+                diseaseNameTextView.setTextColor(color)
+                diseaseNameTextView.textSize = 32f
+                diseaseNameTextView.typeface = pretendardBold
+
+                confidenceTextView.text = "$confidence%"
+                confidenceTextView.setTextColor(color)
+                confidenceTextView.textSize = 52f
+                confidenceTextView.typeface = pretendardBold
+
+                textLabel.text = "의심"
+                textLabel.textSize = 32f
+                textLabel.typeface = pretendardBold
+
+                descriptionTextView.text = "잎에 3~5mm정도의 회색 균사체가 나타나다가 점차 잎 전체가 밀가루를 뿌린 것처럼 확대돼요."
+                descriptionTextView.textSize = 20f
+                descriptionTextView.typeface = pretendardBold
+            }
+
+            diseaseName.contains("정상") -> {
+                val color = resources.getColor(R.color.disease_blue, null)
+
+                diseaseNameTextView.text = "정상"  // "정상"만 표시
+                diseaseNameTextView.setTextColor(color)
+                diseaseNameTextView.textSize = 32f
+                diseaseNameTextView.typeface = pretendardBold
+
+                confidenceTextView.text = "$confidence%"
+                confidenceTextView.setTextColor(color)
+                confidenceTextView.textSize = 52f
+                confidenceTextView.typeface = pretendardBold
+
+                textLabel.text = "잎"  // "잎" 추가
+                textLabel.setTextColor(resources.getColor(android.R.color.black, null))  // 검은색
+                textLabel.textSize = 32f
+                textLabel.typeface = pretendardBold
+
+                descriptionTextView.text = "정상적인 생육입니다."
+                descriptionTextView.textSize = 20f
+                descriptionTextView.typeface = pretendardBold
+            }
+
+            diseaseName.contains("병변") -> {
+                val color = resources.getColor(R.color.disease_yellow, null)
+
+                diseaseNameTextView.text = "기타 질병"
+                diseaseNameTextView.setTextColor(color)
+                diseaseNameTextView.textSize = 32f
+                diseaseNameTextView.typeface = pretendardBold
+
+                confidenceTextView.text = "$confidence%"
+                confidenceTextView.setTextColor(color)
+                confidenceTextView.textSize = 52f
+                confidenceTextView.typeface = pretendardBold
+
+                textLabel.text = "의심"
+                textLabel.textSize = 32f
+                textLabel.typeface = pretendardBold
+
+                descriptionTextView.text = "오이 잎이 질병에 노출된 상태로 보여요."
+                descriptionTextView.textSize = 20f
+                descriptionTextView.typeface = pretendardBold
+            }
+
+            diseaseName.equals("ood", ignoreCase = true) -> {
+                diseaseNameTextView.text = ""
+
+                val color = resources.getColor(R.color.gray, null)
+                confidenceTextView.text = "$confidence%"
+                confidenceTextView.setTextColor(color)
+                confidenceTextView.textSize = 52f
+                confidenceTextView.typeface = pretendardBold
+
+                textLabel.text = "인식 불가"
+                textLabel.textSize = 32f
+                textLabel.typeface = pretendardBold
+
+                descriptionTextView.text = "오이 잎이 인식되지 않았습니다.오이 잎을 정확히 촬영해주세요."
+                descriptionTextView.textSize = 20f
+                descriptionTextView.typeface = pretendardBold
+            }
+
+            else -> {
+                diseaseNameTextView.text = ""
+
+                val color = resources.getColor(R.color.gray, null)
+                confidenceTextView.text = "$confidence%"
+                confidenceTextView.setTextColor(color)
+                confidenceTextView.textSize = 52f
+                confidenceTextView.typeface = pretendardBold
+
+                textLabel.text = "인식 불가"
+                textLabel.textSize = 32f
+                textLabel.typeface = pretendardBold
+
+                descriptionTextView.text = "오이 잎이 인식되지 않았습니다.오이 잎을 정확히 촬영해주세요."
+                descriptionTextView.textSize = 20f
                 descriptionTextView.typeface = pretendardBold
             }
         }

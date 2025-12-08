@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 
@@ -22,8 +23,6 @@ class MyInfoFragment : Fragment() {
     private lateinit var logoutButton: LinearLayout
     private lateinit var viewHistoryButton: LinearLayout
     private lateinit var auth: FirebaseAuth
-
-
 
     companion object {
         private const val PREFS_NAME = "QcumbeRPrefs"
@@ -49,8 +48,6 @@ class MyInfoFragment : Fragment() {
         viewHistoryButton = view.findViewById(R.id.viewHistoryButton)
         auth = FirebaseAuth.getInstance()
 
-
-
         loadUserInfo()
 
         // 내 정보 확인 버튼
@@ -62,6 +59,31 @@ class MyInfoFragment : Fragment() {
         viewHistoryButton.setOnClickListener {
             val intent = Intent(requireContext(), HistoryActivity::class.java)
             startActivity(intent)
+        }
+
+        // 간단모드 버튼 추가
+        val simpleModeButton = view.findViewById<LinearLayout>(R.id.simpleModeButton)
+        val simpleModeSwitch = view.findViewById<SwitchCompat>(R.id.simpleModeSwitch)
+
+        // 현재 간단모드 상태 반영
+        simpleModeSwitch?.isChecked = SimpleModeManager.isSimpleMode(requireContext())
+
+        // 버튼 클릭 시 토글
+        simpleModeButton?.setOnClickListener {
+            val newState = !(simpleModeSwitch?.isChecked ?: false)
+            simpleModeSwitch?.isChecked = newState
+            SimpleModeManager.setSimpleMode(requireContext(), newState)
+
+            Toast.makeText(
+                requireContext(),
+                if (newState) "간단 모드가 켜졌습니다" else "간단 모드가 꺼졌습니다",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        // 스위치 직접 클릭 시에도 저장
+        simpleModeSwitch?.setOnCheckedChangeListener { _, isChecked ->
+            SimpleModeManager.setSimpleMode(requireContext(), isChecked)
         }
 
         // 로그아웃 버튼
