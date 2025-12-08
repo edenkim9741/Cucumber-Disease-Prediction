@@ -17,17 +17,21 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import kotlin.math.abs
+import android.os.Handler
+import android.os.Looper
 
 class GuideActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var gestureDetector: GestureDetectorCompat
+    private var isAutoTransitioning = false // 자동 전환 중인지 체크
 
     companion object {
         private const val PREFS_NAME = "QcumbeRPrefs"
         private const val KEY_FIRST_LAUNCH = "isFirstLaunch"
         private const val SWIPE_THRESHOLD = 100
         private const val SWIPE_VELOCITY_THRESHOLD = 100
+        private const val PAGE_TRANSITION_DELAY = 500L // 4페이지 표시 후 메인으로 가는 딜레이 (ms)
 
         // 최초 실행 여부 확인
         fun isFirstLaunch(context: Context): Boolean {
@@ -54,29 +58,39 @@ class GuideActivity : AppCompatActivity() {
         // 스와이프 비활성화 (가이드 4, 5에서만 활성화)
         viewPager.isUserInputEnabled = false
 
-        // 제스처 감지기 초기화
+        // 제스처 감지기 초기화 (왼쪽 스와이프 감지용)
         gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
-                // 가이드 4번에서만 왼쪽 스와이프 활성화
-                viewPager.isUserInputEnabled = (position == 3)
+                // ⭐ 가이드 4번과 5번에서 스와이프 활성화
+                viewPager.isUserInputEnabled = (position == 3 || position == 4)
+
+                // ⭐ 5→4로 이동했을 때 (자동 전환 중일 때)
+                if (position == 3 && isAutoTransitioning) {
+                    isAutoTransitioning = false
+
+                    // 잠시 후 메인 화면으로 이동
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        finishGuide()
+                    }, PAGE_TRANSITION_DELAY)
+                }
             }
         })
     }
 
     // 터치 이벤트를 제스처 감지기로 전달
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        // 가이드 5번 페이지일 때만 제스처 감지
+        // 가이드 5번 페이지일 때만 왼쪽 스와이프 감지 (메인으로 가기)
         if (viewPager.currentItem == 4) {
             gestureDetector.onTouchEvent(ev)
         }
         return super.dispatchTouchEvent(ev)
     }
 
-    // 스와이프 제스처 리스너
+    // 스와이프 제스처 리스너 (5페이지에서 스와이프 방향 감지)
     inner class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onFling(
             e1: MotionEvent?,
@@ -92,8 +106,16 @@ class GuideActivity : AppCompatActivity() {
             // 수평 스와이프가 수직보다 클 때만
             if (abs(diffX) > abs(diffY)) {
                 if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                    // 오른쪽 스와이프 (diffX > 0)
+
+                    // ⭐ 오른쪽 스와이프 (diffX > 0) → 4페이지로 가고 자동 전환 플래그 설정
                     if (diffX > 0) {
+                        isAutoTransitioning = true
+                        // ViewPager2가 자동으로 4페이지로 이동 (자연스러운 애니메이션)
+                        // 실제 이동은 ViewPager2의 스와이프 기능으로 처리됨
+                        return false // ViewPager2가 처리하도록 false 반환
+                    }
+                    // ⭐ 왼쪽 스와이프 (diffX < 0) → 바로 메인으로 이동
+                    else {
                         finishGuide()
                         return true
                     }
