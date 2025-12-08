@@ -166,19 +166,56 @@ class ResultFragment : Fragment() {
                 textLabel.typeface = pretendardBold
                 descriptionTextView.typeface = pretendardBold
             }
-            else -> {
-                // ⭐ OOD 케이스 - 설명 수정
-                Log.e(TAG, "알 수 없는 병명: $diseaseName (신뢰도: $confidence%)")
-
-                val color = resources.getColor(R.color.gray, null)
+            // 병변 케이스 추가
+            diseaseName.contains("병변") -> {
+                val color = resources.getColor(R.color.disease_yellow, null)
                 diseaseNameTextView.setTextColor(color)
                 confidenceTextView.setTextColor(color)
-                textLabel.text = ""
-                descriptionTextView.text = "오이 잎을 정확하게 다시 찍어주세요.\n정확히 촬영했다면 다른 질병에 걸린 상태일 수 있어요."
+                diseaseNameTextView.text = "기타 질병" // 병명을 "기타 질병"으로 변경
+                textLabel.text = "이 의심돼요"
+                descriptionTextView.text = "오이 잎이 질병에 노출된 상태로 보여요."
                 detailButtonLayout?.visibility = View.GONE
 
                 // 글씨체 적용
                 diseaseNameTextView.typeface = pretendardBold
+                confidenceTextView.typeface = pretendardBold
+                textLabel.typeface = pretendardBold
+                descriptionTextView.typeface = pretendardBold
+            }
+            // OOD 케이스
+            diseaseName.equals("ood", ignoreCase = true) -> {
+                Log.e(TAG, "OOD (신뢰도: $confidence%)")
+
+                // 병명을 빈 문자열로 설정
+                diseaseNameTextView.text = ""
+
+                val color = resources.getColor(R.color.gray, null)
+                confidenceTextView.setTextColor(color)
+
+                textLabel.text = "인식하지 못했어요"
+                descriptionTextView.text = "오이 잎이 인식되지 않았습니다. 오이 잎을 정확히 촬영해주세요."
+                detailButtonLayout?.visibility = View.GONE
+
+                // 글씨체 적용
+                confidenceTextView.typeface = pretendardBold
+                textLabel.typeface = pretendardBold
+                descriptionTextView.typeface = pretendardBold
+            }
+            // 기타 예외 케이스 (안전장치)
+            else -> {
+                Log.e(TAG, "예상치 못한 병명: $diseaseName (신뢰도: $confidence%)")
+
+                // 병명을 빈 문자열로 설정 (GONE 대신)
+                diseaseNameTextView.text = ""
+
+                val color = resources.getColor(R.color.gray, null)
+                confidenceTextView.setTextColor(color)
+
+                textLabel.text = "인식하지 못했어요"
+                descriptionTextView.text = "오이 잎이 인식되지 않았습니다. 오이 잎을 정확히 촬영해주세요."
+                detailButtonLayout?.visibility = View.GONE
+
+                // 글씨체 적용
                 confidenceTextView.typeface = pretendardBold
                 textLabel.typeface = pretendardBold
                 descriptionTextView.typeface = pretendardBold
