@@ -90,4 +90,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
     implementation("com.microsoft.onnxruntime:onnxruntime-android:1.16.0")
+
+    // Glide (이미지 로딩 라이브러리)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

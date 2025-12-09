@@ -84,7 +84,7 @@
                 android:src="@drawable/filter_powdery_on"
                 android:layout_marginEnd="8dp"/>
 
-            <!-- OOD -->
+            <!-- 기타병변 -->
             <ImageView
                 android:id="@+id/filterOod"
                 android:layout_width="60dp"
