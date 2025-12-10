@@ -28,7 +28,7 @@ class DiseasePredictor(private val context: Context) {
         // DINOv2/ImageNet 표준 전처리 값 (학습 때 사용한 값과 동일해야 함)
         private val NORM_MEAN_RGB = floatArrayOf(0.485f, 0.456f, 0.406f)
         private val NORM_STD_RGB = floatArrayOf(0.229f, 0.224f, 0.225f)
-        private val CLASS_NAMES = listOf("병변", "노균병", "정상", "ood", "흰가루병") // 클래스 순서 중요
+        private val CLASS_NAMES = listOf("병변", "노균병", "정상", "흰가루병") // 클래스 순서 중요
     }
 
     private lateinit var module: Module
@@ -36,7 +36,7 @@ class DiseasePredictor(private val context: Context) {
     // 3. 모델 로드 함수 (Fragment에서 호출)
     fun initModel() {
         try {
-            val modelPath = assetFilePath(context, "mobilenet_v2_5class.pte")
+            val modelPath = assetFilePath(context, "mobilenet_v2_cucumber_disease.pte")
             Log.i(TAG, "모델 로드 경로: $modelPath")
             module = Module.load(modelPath)
             Log.i(TAG, "모델 로드 성공: $modelPath")
@@ -54,14 +54,10 @@ class DiseasePredictor(private val context: Context) {
         val outputTensor = output[0].toTensor()
         val scores = outputTensor.getDataAsFloatArray()
 
-        val threshold = 4.809f
-
-
 
         val probs = softmax(scores)
         val maxIdx = probs.indices.maxByOrNull { probs[it] } ?: 0
-        val maxProb = probs[maxIdx] // 가장 높은 확률값
-        val maxLogit = scores[maxIdx] // 가장 높은 로짓값
+        val maxProb = probs[maxIdx] // 가장 높은 확률AAAAAA값
         val predictedLabel = CLASS_NAMES[maxIdx] // 가장 높은 확률의 라벨
 
         //print score in log one by one
@@ -69,8 +65,9 @@ class DiseasePredictor(private val context: Context) {
         for (i in probs.indices) {
             Log.i(TAG, "${CLASS_NAMES[i]}: ${probs[i]}")
         }
+        val threshold = 0.6f
 
-        val finalLabel = if (maxLogit > threshold) {
+        val finalLabel = if (maxProb > threshold) {
             predictedLabel
         } else {
             "ood" // 확률이 임계값 이하일 경우 OOD 반환
@@ -85,11 +82,7 @@ class DiseasePredictor(private val context: Context) {
     private fun preprocessImage(bitmap: Bitmap): Tensor {
         val width = 224
         val height = 224
-        val resized = Bitmap.createScaledBitmap(bitmap, 256, 256, true)
-
-        val startX = (256-width)/2
-        val startY = (256-height)/2
-        val cropped = Bitmap.createBitmap(resized, startX, startY, width, height)
+        val resized = Bitmap.createScaledBitmap(bitmap, height, width, true)
 
         val inputTensor = FloatArray(1 * 3 * height * width)
         val mean = floatArrayOf(0.485f, 0.456f, 0.406f)
@@ -98,7 +91,7 @@ class DiseasePredictor(private val context: Context) {
         val channelSize = width*height
 
         val pixels = IntArray(channelSize)
-        cropped.getPixels(pixels, 0, width, 0, 0, width, height)
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
 
         for (y in 0 until height) {
             for (x in 0 until width) {
