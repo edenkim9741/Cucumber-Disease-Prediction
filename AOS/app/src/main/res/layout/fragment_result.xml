@@ -106,7 +106,7 @@
         android:id="@+id/detailButtonLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-3dp"
+        android:layout_marginBottom="-7dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,8 +116,8 @@
         <!-- 화살표 이미지 -->
         <ImageView
             android:id="@+id/detailButtonImage"
-            android:layout_width="270px"
-            android:layout_height="183.5px"
+            android:layout_width="241.25px"
+            android:layout_height="163.96px"
             android:src="@drawable/detail_button_background"
             android:contentDescription="자세히 알아보기" />
 
