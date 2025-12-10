@@ -145,7 +145,7 @@ class ResultFragment : Fragment() {
         }
     }
 
-    // 일반모드 UI (기존 코드)
+    // 일반모드 UI
     private fun applyNormalModeUI(
         diseaseNameTextView: TextView,
         confidenceTextView: TextView,
@@ -155,101 +155,118 @@ class ResultFragment : Fragment() {
         diseaseName: String,
         confidence: Int
     ) {
-        diseaseNameTextView.text = diseaseName
-        confidenceTextView.text = "${confidence}%"
-
+        // 1. 폰트 준비
         val pretendardBold = ResourcesCompat.getFont(requireContext(), R.font.pretendard_bold)
 
+        // 2. [도우미 함수] % 기호만 작게 만드는 함수 (내부 선언)
+        fun setConfidenceText(view: TextView, value: Int, color: Int) {
+            val fullText = "$value%"
+            val spannable = SpannableString(fullText)
+
+            // % 기호(마지막 1글자)를 0.6배 크기로 설정 (일반모드는 글씨가 작으니 0.6f 추천)
+            spannable.setSpan(
+                RelativeSizeSpan(0.6f),
+                fullText.length - 1,
+                fullText.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            view.text = spannable
+            view.setTextColor(color)
+            view.typeface = pretendardBold // 폰트도 여기서 한 번에 적용
+        }
+
+        // 3. 기본 텍스트 설정 (병 이름)
+        diseaseNameTextView.text = diseaseName
+
+        // 4. 공통 폰트 설정 (나머지 뷰들)
+        diseaseNameTextView.typeface = pretendardBold
+        textLabel.typeface = pretendardBold
+        descriptionTextView.typeface = pretendardBold
+
+        // 5. 조건별 UI 적용
         when {
             diseaseName.contains("노균병") -> {
                 val color = resources.getColor(R.color.disease_yellow, null)
                 diseaseNameTextView.setTextColor(color)
-                confidenceTextView.setTextColor(color)
+
+                // ⭐ 함수 사용 (% 작게 + 색상 적용)
+                setConfidenceText(confidenceTextView, confidence, color)
+
                 textLabel.text = "이 의심돼요"
                 descriptionTextView.text = "잎 표면에 처음에는 퇴록한 부정형 반점이 생기고, 감염부위가 담황색을 띕니다."
                 detailButtonLayout?.visibility = View.VISIBLE
-
-                diseaseNameTextView.typeface = pretendardBold
-                confidenceTextView.typeface = pretendardBold
-                textLabel.typeface = pretendardBold
-                descriptionTextView.typeface = pretendardBold
             }
+
             diseaseName.contains("흰가루병") -> {
                 val color = resources.getColor(R.color.disease_yellow, null)
                 diseaseNameTextView.setTextColor(color)
-                confidenceTextView.setTextColor(color)
+
+                // ⭐ 함수 사용
+                setConfidenceText(confidenceTextView, confidence, color)
+
                 textLabel.text = "이 의심돼요"
                 descriptionTextView.text = "잎에 3~5mm정도의 회색 균사체가 나타나다가 점차 잎 전체가 밀가루를 뿌린 것처럼 확대돼요."
                 detailButtonLayout?.visibility = View.VISIBLE
-
-                diseaseNameTextView.typeface = pretendardBold
-                confidenceTextView.typeface = pretendardBold
-                textLabel.typeface = pretendardBold
-                descriptionTextView.typeface = pretendardBold
             }
+
             diseaseName.contains("정상") -> {
                 val color = resources.getColor(R.color.disease_blue, null)
                 diseaseNameTextView.setTextColor(color)
-                confidenceTextView.setTextColor(color)
+
+                // ⭐ 함수 사용
+                setConfidenceText(confidenceTextView, confidence, color)
+
                 textLabel.text = "적인 잎입니다"
-                textLabel.setTextColor(resources.getColor(android.R.color.black, null)) // ⭐ 검은색
+                textLabel.setTextColor(resources.getColor(android.R.color.black, null))
                 descriptionTextView.text = "정상적인 생육입니다."
                 detailButtonLayout?.visibility = View.GONE
-
-                diseaseNameTextView.typeface = pretendardBold
-                confidenceTextView.typeface = pretendardBold
-                textLabel.typeface = pretendardBold
-                descriptionTextView.typeface = pretendardBold
             }
+
             diseaseName.contains("병변") -> {
                 val color = resources.getColor(R.color.disease_yellow, null)
                 diseaseNameTextView.setTextColor(color)
-                confidenceTextView.setTextColor(color)
                 diseaseNameTextView.text = "기타 질병"
+
+                // ⭐ 함수 사용
+                setConfidenceText(confidenceTextView, confidence, color)
+
                 textLabel.text = "이 의심돼요"
                 descriptionTextView.text = "오이 잎이 질병에 노출된 상태로 보여요."
                 detailButtonLayout?.visibility = View.GONE
-
-                diseaseNameTextView.typeface = pretendardBold
-                confidenceTextView.typeface = pretendardBold
-                textLabel.typeface = pretendardBold
-                descriptionTextView.typeface = pretendardBold
             }
+
             diseaseName.equals("ood", ignoreCase = true) -> {
                 Log.e(TAG, "OOD (신뢰도: $confidence%)")
 
-                diseaseNameTextView.text = ""
+                diseaseNameTextView.text = "" // 이름 없음
 
                 val color = resources.getColor(R.color.gray, null)
-                confidenceTextView.setTextColor(color)
+
+                // ⭐ 함수 사용
+                setConfidenceText(confidenceTextView, confidence, color)
 
                 textLabel.text = "인식하지 못했어요"
                 descriptionTextView.text = "오이 잎이 인식되지 않았습니다. 오이 잎을 정확히 촬영해주세요."
                 detailButtonLayout?.visibility = View.GONE
-
-                confidenceTextView.typeface = pretendardBold
-                textLabel.typeface = pretendardBold
-                descriptionTextView.typeface = pretendardBold
             }
+
             else -> {
                 Log.e(TAG, "예상치 못한 병명: $diseaseName (신뢰도: $confidence%)")
 
-                diseaseNameTextView.text = ""
+                diseaseNameTextView.text = "" // 이름 없음
 
                 val color = resources.getColor(R.color.gray, null)
-                confidenceTextView.setTextColor(color)
+
+                // ⭐ 함수 사용
+                setConfidenceText(confidenceTextView, confidence, color)
 
                 textLabel.text = "인식하지 못했어요"
                 descriptionTextView.text = "오이 잎이 인식되지 않았습니다. 오이 잎을 정확히 촬영해주세요."
                 detailButtonLayout?.visibility = View.GONE
-
-                confidenceTextView.typeface = pretendardBold
-                textLabel.typeface = pretendardBold
-                descriptionTextView.typeface = pretendardBold
             }
         }
     }
-
     // 간단모드 UI
     private fun applySimpleModeUI(
         diseaseNameTextView: TextView,

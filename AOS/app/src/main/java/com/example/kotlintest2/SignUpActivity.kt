@@ -146,8 +146,12 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun navigateToGuide() {
-        // ✅ 회원가입 후 가이드로 이동
         val intent = Intent(this, GuideActivity::class.java)
+
+        // 기존에 쌓여있던 Activity 스택(로그인, 회원가입 화면 등)을 모두 지우고
+        // GuideActivity를 새로운 태스크의 시작으로 설정합니다.
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
         startActivity(intent)
         finish()
     }
