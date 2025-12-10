@@ -88,8 +88,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
 
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
 
         android:text="잎에 3~5mm정도의 회색 균사체가 나타나다가 점차 잎 전체가 밀가루를 뿌린 것처럼 확대돼요."
 
