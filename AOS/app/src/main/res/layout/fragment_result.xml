@@ -12,7 +12,7 @@
         android:id="@+id/logoTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="17dp"
         android:text="QcumbeR"
         android:textSize="94.37px"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
         android:id="@+id/diseaseNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="흰가루병"
         android:textSize="75px"
         android:textColor="@color/disease_yellow"
@@ -88,8 +88,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
 
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
 
         android:text="잎에 3~5mm정도의 회색 균사체가 나타나다가 점차 잎 전체가 밀가루를 뿌린 것처럼 확대돼요."
 
@@ -106,7 +106,7 @@
         android:id="@+id/detailButtonLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-7dp"
+        android:layout_marginBottom="-5dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
